@@ -13,8 +13,8 @@ public class Card {
         if(color == null || type==null) throw new NullPointerException("Empty argument");
         if(color == WILD && type!= CHANGE_COLOR && type!= PLUS_FOUR) throw new IllegalArgumentException();
         if(color != WILD && (type == CHANGE_COLOR || type == PLUS_FOUR)) throw new IllegalArgumentException();
-        if((type != NUMBER && number!=0) || (type==NUMBER && number == 0)) throw new IllegalArgumentException();
-        if(number<1 || number>9) throw new IllegalArgumentException();
+        if(type != NUMBER && number!=0) throw new IllegalArgumentException();
+        if(type == NUMBER && (number<0 || number>9)) throw new IllegalArgumentException();
 
         this.color = color;
         this.type = type;

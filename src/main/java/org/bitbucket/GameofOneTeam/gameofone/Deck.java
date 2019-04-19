@@ -14,18 +14,23 @@ public class Deck {
     Deck(int n){
         if(n<1 || n>4) throw new IllegalArgumentException("Wrong number of decks");
 
-        for(int i=1;i<=4;i++){
-
+        for(int i=0;i<n;i++) {
             for(CardColor C : CardColor.values()) {
                 if(C == WILD) continue;
-                for (int j = 1; j <= 9; j++) draw_pile.add(new Card(C,NUMBER,j));
-                draw_pile.add(new Card(C,BLOCK,0));
-                draw_pile.add(new Card(C,REVERSE,0));
-                draw_pile.add(new Card(C,PLUS_TWO,0));
+                draw_pile.add(new Card(C,NUMBER,0));
+                for(int k=0;k<2;k++) {
+                    for (int j = 1; j <= 9; j++) {
+                        draw_pile.add(new Card(C, NUMBER, j));
+                    }
+                    draw_pile.add(new Card(C, BLOCK, 0));
+                    draw_pile.add(new Card(C, REVERSE, 0));
+                    draw_pile.add(new Card(C, PLUS_TWO, 0));
+                }
             }
-
-            draw_pile.add(new Card(WILD,PLUS_FOUR,0));
-            draw_pile.add(new Card(WILD,CHANGE_COLOR,0));
+            for(int k=0;k<4;k++) {
+                draw_pile.add(new Card(WILD, PLUS_FOUR, 0));
+                draw_pile.add(new Card(WILD, CHANGE_COLOR, 0));
+            }
         }
 
         shuffle();
