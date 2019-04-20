@@ -4,11 +4,13 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class EasyBot extends Player {
-    public Card move(Card currentCard) {
-        LinkedList<Card> available = getAvailable(currentCard);
+    public Card move() {
+        LinkedList<Card> available = getAvailable();
         if(available.isEmpty()) return null;
 
         Random R = new Random(System.currentTimeMillis());
-        return available.remove(R.nextInt(available.size()));
+        Card pickedCard = available.remove(R.nextInt(available.size()));
+        hand.remove(pickedCard);
+        return pickedCard;
     }
 }

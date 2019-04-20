@@ -37,16 +37,27 @@ public class Deck {
     }
 
     private void shuffle(){ Collections.shuffle(draw_pile,new Random(System.currentTimeMillis())); }
-    Card draw(){
+
+    public Card draw(){
         if(draw_pile.isEmpty()){
+            if(played_pile.size() == 1) return null;
+
             Card tmp = played_pile.removeLast();
             draw_pile.addAll(played_pile);
             played_pile.clear();
             played_pile.add(tmp);
+
             shuffle();
         }
 
-        played_pile.addLast(draw_pile.getLast());
         return draw_pile.removeLast();
+    }
+
+    public void playCard(Card card){
+        played_pile.addLast(card);
+    }
+
+    public int size(){
+       return played_pile.size() + draw_pile.size();
     }
 }

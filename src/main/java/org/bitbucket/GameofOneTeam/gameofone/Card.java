@@ -20,4 +20,20 @@ public class Card {
         this.type = type;
         this.number = number;
     }
+
+    @Override
+    public String toString() {
+        return color.toString() + " " + type.toString() + " " + number;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Card)) return false;
+        return (((Card) obj).color == this.color) && (((Card) obj).type == this.type) && (((Card) obj).number == this.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return color.hashCode() * type.hashCode() * (number+17);
+    }
 }

@@ -6,9 +6,10 @@ import static org.bitbucket.GameofOneTeam.gameofone.CardColor.*;
 import static org.bitbucket.GameofOneTeam.gameofone.CardType.*;
 
 public abstract class Player {
-    protected LinkedList<Card> hand = new LinkedList<Card>();
+    LinkedList<Card> hand = new LinkedList<Card>();
+    Card currentCard;
 
-    protected LinkedList<Card> getAvailable(Card currentCard){
+    LinkedList<Card> getAvailable(){
         LinkedList<Card> availableCards = new LinkedList<Card>();
 
         for(Card z : hand){
@@ -19,7 +20,7 @@ public abstract class Player {
                 else { availableCards.addLast(z); continue;}
             }
 
-            if(z.color == WILD) availableCards.addLast(z);
+            if(z.color == WILD || currentCard.color == WILD) availableCards.addLast(z);
             else if(z.color==currentCard.color) availableCards.addLast(z);
         }
 
@@ -27,8 +28,12 @@ public abstract class Player {
     }
 
     public void draw(Card card){
-        hand.addLast(card);
+        if(card != null) hand.addLast(card);
     }
 
-    public abstract Card move(Card currentCard);
+    public int getCardNumber() { return hand.size(); }
+    public void update(Card currentCard) {
+        if(currentCard != null) this.currentCard = currentCard;
+    }
+    public abstract Card move();
 }
