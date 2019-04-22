@@ -11,14 +11,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 class MainMenu extends Scene {
-    private static Font btnStyle = Font.font("Ubuntu Mono",50);
+    private final static Font btnStyle = Font.font("Ubuntu Mono",50);
     private final static StackPane root = new StackPane();
-    private final static Image background = new Image("https://i.stack.imgur.com/q02th.jpg");
-    private final static VBox mainmenu = new VBox(50);
-    private final static VBox vb = new VBox(20);
-    private final static Button newgame = new Button();
-    private final static Button settings = new Button();
-    private final static Button exitgame = new Button();
+    private final static Image background = new Image("/mainmenu.jpg");
+    private final static VBox vb = new VBox(50);
+    private final static VBox buttons = new VBox(20);
+    private final static Button newgameBtn = new Button();
+    private final static Button settingsBtn = new Button();
+    private final static Button exitgameBtn = new Button();
     private final static Text title = new Text("Game of One");
     static {
         // System.out.println(Font.getFamilies()); -- all fonts
@@ -28,31 +28,31 @@ class MainMenu extends Scene {
                        "-fx-stroke: black;" +
                        "-fx-stroke-width: 5;");
 
-        newgame.setText("New Game (WIP)");
-        newgame.setMinSize(100,100);
-        newgame.setFont(btnStyle);
-        newgame.setDisable(true);
+        newgameBtn.setText("New Game (WIP)");
+        newgameBtn.setMinSize(100,100);
+        newgameBtn.setFont(btnStyle);
+        newgameBtn.setDisable(true);
 
-        settings.setText("Settings (WIP)");
-        settings.setMinSize(100,100);
-        settings.setFont(btnStyle);
-        settings.setDisable(true);
+        settingsBtn.setText("Settings (WIP)");
+        settingsBtn.setMinSize(100,100);
+        settingsBtn.setFont(btnStyle);
+        settingsBtn.setDisable(true);
 
-        exitgame.setText("Exit Game");
-        exitgame.setMinSize(100,100);
-        exitgame.setFont(btnStyle);
-        exitgame.setOnAction(new EventHandler<ActionEvent>() {
+        exitgameBtn.setText("Exit Game");
+        exitgameBtn.setMinSize(100,100);
+        exitgameBtn.setFont(btnStyle);
+        exitgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
                 System.exit(0);
             }
         });
 
-        vb.getChildren().addAll(newgame,settings,exitgame);
+        buttons.getChildren().addAll(newgameBtn,settingsBtn,exitgameBtn);
+        buttons.setAlignment(Pos.CENTER);
+        vb.getChildren().addAll(title,buttons);
         vb.setAlignment(Pos.CENTER);
-        mainmenu.getChildren().addAll(title,vb);
-        mainmenu.setAlignment(Pos.CENTER);
-        root.getChildren().add(mainmenu);
+        root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
     MainMenu(int w, int h) {
