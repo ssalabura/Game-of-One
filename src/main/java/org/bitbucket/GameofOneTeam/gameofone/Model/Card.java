@@ -1,7 +1,7 @@
-package org.bitbucket.GameofOneTeam.gameofone;
+package org.bitbucket.GameofOneTeam.gameofone.Model;
 
-import static org.bitbucket.GameofOneTeam.gameofone.CardType.*;
-import static org.bitbucket.GameofOneTeam.gameofone.CardColor.*;
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
 
 public class Card {
     final CardColor color;

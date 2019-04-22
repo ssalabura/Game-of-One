@@ -1,9 +1,9 @@
-package org.bitbucket.GameofOneTeam.gameofone;
+package org.bitbucket.GameofOneTeam.gameofone.Model;
 
 import java.util.LinkedList;
 
-import static org.bitbucket.GameofOneTeam.gameofone.CardColor.*;
-import static org.bitbucket.GameofOneTeam.gameofone.CardType.*;
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 
 public abstract class Player {
     LinkedList<Card> hand = new LinkedList<Card>();

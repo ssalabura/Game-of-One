@@ -1,11 +1,11 @@
-package org.bitbucket.GameofOneTeam.gameofone;
+package org.bitbucket.GameofOneTeam.gameofone.Model;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
-import static org.bitbucket.GameofOneTeam.gameofone.CardColor.*;
-import static org.bitbucket.GameofOneTeam.gameofone.CardType.*;
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 
 public class Deck {
     private LinkedList<Card> draw_pile = new LinkedList<Card>();

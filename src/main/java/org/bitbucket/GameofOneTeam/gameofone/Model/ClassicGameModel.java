@@ -1,4 +1,4 @@
-package org.bitbucket.GameofOneTeam.gameofone;
+package org.bitbucket.GameofOneTeam.gameofone.Model;
 
 import java.util.LinkedList;
 
