@@ -7,9 +7,11 @@ public class ClassicGameModel implements GameModel {
     private Deck deck = new Deck(1);
 
 
-    public ClassicGameModel(){
+    public ClassicGameModel(boolean demo){
+
         for(int i=1;i<=5;i++){
-            players.addLast(new EasyBot());
+            if(demo || i!=1) players.addLast(new EasyBot());
+            else players.addLast(new HumanPlayer());
 
             for(int j=1;j<=7;j++){ players.getLast().draw(deck.draw());}
         }
@@ -30,7 +32,8 @@ public class ClassicGameModel implements GameModel {
             else deck.playCard(playedCard);
 
             if(players.get(currentPlayer).getCardNumber()==0){
-                System.out.println("Player " + currentPlayer + " wins!");
+                if(currentPlayer==0 && players.get(0) instanceof HumanPlayer) System.out.println("You won!");
+                else System.out.println("EasyBot " + currentPlayer + " wins!");
                 return;
             }
 
