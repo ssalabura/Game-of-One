@@ -2,10 +2,12 @@ package org.bitbucket.GameofOneTeam.gameofone.Model;
 
 import java.util.LinkedList;
 
+import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
+
 public class ClassicGameModel implements GameModel {
     private LinkedList<Player> players = new LinkedList<Player>();
     private Deck deck = new Deck(1);
-
+    private boolean clockwise = true;
 
     public ClassicGameModel(){
         for(int i=1;i<=5;i++){
@@ -27,14 +29,18 @@ public class ClassicGameModel implements GameModel {
             notifyPlayers(playedCard);
 
             if(playedCard == null) players.get(currentPlayer).draw(deck.draw());
-            else deck.playCard(playedCard);
+            else {
+                deck.playCard(playedCard);
+                if(playedCard.type == REVERSE) { clockwise = !clockwise; }
+            }
 
             if(players.get(currentPlayer).getCardNumber()==0){
                 System.out.println("Player " + currentPlayer + " wins!");
                 return;
             }
 
-            currentPlayer = (currentPlayer + 1) % players.size();
+            if(clockwise) currentPlayer = (currentPlayer + 1) % players.size();
+            else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
         }
     }
 
