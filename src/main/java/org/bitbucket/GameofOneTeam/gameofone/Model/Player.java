@@ -8,11 +8,24 @@ import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 public abstract class Player {
     LinkedList<Card> hand = new LinkedList<Card>();
     Card currentCard;
+    private boolean active = true;
 
     LinkedList<Card> getAvailable(){
         LinkedList<Card> availableCards = new LinkedList<Card>();
 
         for(Card z : hand){
+            if(active){
+                if(currentCard.type == PLUS_FOUR) {
+                    if(z.type == PLUS_FOUR) availableCards.addLast(z);
+                    else continue;
+                }
+
+                else if(currentCard.type == PLUS_TWO){
+                    if(z.type == PLUS_TWO || z.type == PLUS_FOUR) availableCards.addLast(z);
+                    else continue;
+                }
+            }
+
             if(z.type==currentCard.type){
                 if(z.type==NUMBER){
                     if(z.number==currentCard.number) { availableCards.addLast(z); continue;}
@@ -33,7 +46,8 @@ public abstract class Player {
 
     public int getCardNumber() { return hand.size(); }
     public void update(Card currentCard) {
-        if(currentCard != null) this.currentCard = currentCard;
+        if(currentCard != null){ this.currentCard = currentCard; active = true; }
+        else active = false;
     }
     public abstract Card move();
 }

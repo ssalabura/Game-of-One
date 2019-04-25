@@ -8,6 +8,7 @@ public class ClassicGameModel implements GameModel {
     private LinkedList<Player> players = new LinkedList<Player>();
     private Deck deck = new Deck(1);
     private boolean clockwise = true;
+    private int cardsToAdd = 0;
 
     public ClassicGameModel(boolean demo){
 
@@ -27,13 +28,25 @@ public class ClassicGameModel implements GameModel {
         notifyPlayers(firstCard);
 
         while (true){
+            System.out.println(getCardNumber());
+
             Card playedCard = players.get(currentPlayer).move();
             notifyPlayers(playedCard);
+            System.out.println("< " + currentPlayer + " " + playedCard + " >");
 
-            if(playedCard == null) players.get(currentPlayer).draw(deck.draw());
+            if(playedCard == null) {
+                if(cardsToAdd == 0) players.get(currentPlayer).draw(deck.draw());
+                else {
+                    for(int i=1;i<=cardsToAdd;i++) players.get(currentPlayer).draw(deck.draw());
+                    cardsToAdd = 0;
+                }
+            }
+
             else {
                 deck.playCard(playedCard);
                 if(playedCard.type == REVERSE) { clockwise = !clockwise; }
+                if(playedCard.type == PLUS_FOUR) cardsToAdd += 4;
+                if(playedCard.type == PLUS_TWO) cardsToAdd += 2;
             }
 
             if(players.get(currentPlayer).getCardNumber()==0){
@@ -45,6 +58,12 @@ public class ClassicGameModel implements GameModel {
             if(clockwise) currentPlayer = (currentPlayer + 1) % players.size();
             else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
         }
+    }
+
+    LinkedList<Integer> getCardNumber(){
+        LinkedList<Integer> L = new LinkedList<Integer>();
+        for(Player z : players){ L.addLast(z.hand.size());}
+        return L;
     }
 
     private void notifyPlayers(Card card){
