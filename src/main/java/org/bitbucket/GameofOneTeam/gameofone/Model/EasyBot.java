@@ -13,4 +13,7 @@ public class EasyBot extends Player {
         hand.remove(pickedCard);
         return pickedCard;
     }
+    public int changeColor() {
+        return new Random().nextInt(4);
+    }
 }

@@ -4,7 +4,7 @@ import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
 
 public class Card {
-    final CardColor color;
+    CardColor color;
     final CardType type;
     final int number;
     //we also need to store path to image

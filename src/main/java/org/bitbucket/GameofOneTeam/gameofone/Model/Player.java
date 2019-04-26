@@ -50,4 +50,5 @@ public abstract class Player {
         else active = false;
     }
     public abstract Card move();
+    public abstract int changeColor();
 }

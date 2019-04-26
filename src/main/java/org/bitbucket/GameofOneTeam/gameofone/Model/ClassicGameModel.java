@@ -1,6 +1,8 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
+import java.nio.channels.Channel;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 
@@ -9,6 +11,7 @@ public class ClassicGameModel implements GameModel {
     private Deck deck = new Deck(1);
     private boolean clockwise = true;
     private int cardsToAdd = 0;
+    private boolean block = false;
 
     public ClassicGameModel(boolean demo){
 
@@ -29,30 +32,40 @@ public class ClassicGameModel implements GameModel {
 
         while (true){
             System.out.println(getCardNumber());
-
-            Card playedCard = players.get(currentPlayer).move();
+            Card playedCard;
+            if(block) playedCard = null;
+            else playedCard = players.get(currentPlayer).move();
             notifyPlayers(playedCard);
             System.out.println("< " + currentPlayer + " " + playedCard + " >");
 
-            if(playedCard == null) {
-                if(cardsToAdd == 0) players.get(currentPlayer).draw(deck.draw());
-                else {
-                    for(int i=1;i<=cardsToAdd;i++) players.get(currentPlayer).draw(deck.draw());
-                    cardsToAdd = 0;
-                }
-            }
-
+            if(block) block=false;
             else {
-                deck.playCard(playedCard);
-                if(playedCard.type == REVERSE) { clockwise = !clockwise; }
-                if(playedCard.type == PLUS_FOUR) cardsToAdd += 4;
-                if(playedCard.type == PLUS_TWO) cardsToAdd += 2;
-            }
+                if (playedCard == null) {
+                    if (cardsToAdd == 0) players.get(currentPlayer).draw(deck.draw());
+                    else {
+                        for (int i = 1; i <= cardsToAdd; i++) players.get(currentPlayer).draw(deck.draw());
+                        cardsToAdd = 0;
+                    }
+                }
+                else {
+                    deck.playCard(playedCard);
+                    if (playedCard.type == REVERSE) {
+                        clockwise = !clockwise;
+                    }
+                    if (playedCard.type == PLUS_FOUR) cardsToAdd += 4;
+                    if (playedCard.type == PLUS_TWO) cardsToAdd += 2;
+                    if (playedCard.type == BLOCK) block = true;
+                    if (playedCard.type == CHANGE_COLOR) {
+                        int num = players.get(currentPlayer).changeColor();
+                        playedCard.color=CardColor.values()[num];
+                    }
+                }
 
-            if(players.get(currentPlayer).getCardNumber()==0){
-                if(currentPlayer==0 && players.get(0) instanceof HumanPlayer) System.out.println("You won!");
-                else System.out.println("EasyBot " + currentPlayer + " wins!");
-                return;
+                if (players.get(currentPlayer).getCardNumber() == 0) {
+                    if (currentPlayer == 0 && players.get(0) instanceof HumanPlayer) System.out.println("You won!");
+                    else System.out.println("EasyBot " + currentPlayer + " wins!");
+                    return;
+                }
             }
 
             if(clockwise) currentPlayer = (currentPlayer + 1) % players.size();
