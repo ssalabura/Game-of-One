@@ -1,8 +1,6 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
-import java.nio.channels.Channel;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 
@@ -12,74 +10,79 @@ public class ClassicGameModel implements GameModel {
     private boolean clockwise = true;
     private int cardsToAdd = 0;
     private boolean block = false;
+    private int currentPlayer = 0;
+    private Integer winner = null;
+    private Card playedCard;
+
+     private void notifyPlayers(Card card){
+        for (Player z : players) { z.update(card);}
+     }
 
     public ClassicGameModel(boolean demo){
 
-        for(int i=1;i<=5;i++){
-            if(demo || i!=1) players.addLast(new EasyBot());
+        for(int i=0;i<=3;i++){
+            if(demo || i!=0) players.addLast(new EasyBot());
             else players.addLast(new HumanPlayer());
 
             for(int j=1;j<=7;j++){ players.getLast().draw(deck.draw());}
         }
-    }
 
-    public void run(){
-        int currentPlayer = 0;
         System.out.println("Start!");
         Card firstCard = deck.draw();
         deck.playCard(firstCard);
         notifyPlayers(firstCard);
+    }
 
-        while (true){
-            System.out.println(getCardNumber());
-            Card playedCard;
-            if(block) playedCard = null;
-            else playedCard = players.get(currentPlayer).move();
-            notifyPlayers(playedCard);
-            System.out.println("< " + currentPlayer + " " + playedCard + " >");
+    public void playNextTurn() {
+        if (block) playedCard = null;
+        else playedCard = players.get(currentPlayer).move();
+        notifyPlayers(playedCard);
 
-            if(block) block=false;
-            else {
-                if (playedCard == null) {
-                    if (cardsToAdd == 0) players.get(currentPlayer).draw(deck.draw());
-                    else {
-                        for (int i = 1; i <= cardsToAdd; i++) players.get(currentPlayer).draw(deck.draw());
-                        cardsToAdd = 0;
-                    }
-                }
+        if (block) block = false;
+        else {
+            if (playedCard == null) {
+                if (cardsToAdd == 0) players.get(currentPlayer).draw(deck.draw());
                 else {
-                    deck.playCard(playedCard);
-                    if (playedCard.type == REVERSE) {
-                        clockwise = !clockwise;
-                    }
-                    if (playedCard.type == PLUS_FOUR) cardsToAdd += 4;
-                    if (playedCard.type == PLUS_TWO) cardsToAdd += 2;
-                    if (playedCard.type == BLOCK) block = true;
-                    if (playedCard.type == CHANGE_COLOR) {
-                        int num = players.get(currentPlayer).changeColor();
-                        playedCard.color=CardColor.values()[num];
-                    }
+                    for (int i = 0; i < cardsToAdd; i++) players.get(currentPlayer).draw(deck.draw());
+                    cardsToAdd = 0;
                 }
-
-                if (players.get(currentPlayer).getCardNumber() == 0) {
-                    if (currentPlayer == 0 && players.get(0) instanceof HumanPlayer) System.out.println("You won!");
-                    else System.out.println("EasyBot " + currentPlayer + " wins!");
-                    return;
+            } else {
+                deck.playCard(playedCard);
+                if (playedCard.type == REVERSE) {
+                    clockwise = !clockwise;
+                }
+                if (playedCard.type == PLUS_FOUR) cardsToAdd += 4;
+                if (playedCard.type == PLUS_TWO) cardsToAdd += 2;
+                if (playedCard.type == BLOCK) block = true;
+                if (playedCard.type == CHANGE_COLOR) {
+                    int num = players.get(currentPlayer).changeColor();
+                    playedCard.color = CardColor.values()[num];
                 }
             }
 
-            if(clockwise) currentPlayer = (currentPlayer + 1) % players.size();
-            else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
+            if (players.get(currentPlayer).getCardNumber() == 0) {
+                //if (currentPlayer == 0 && players.get(0) instanceof HumanPlayer) System.out.println("You won!");
+                winner = currentPlayer;
+                return;
+            }
         }
+
+        if (clockwise) currentPlayer = (currentPlayer + 1) % players.size();
+        else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
     }
 
-    LinkedList<Integer> getCardNumber(){
+    public LinkedList<Integer> getCardNumber(){
         LinkedList<Integer> L = new LinkedList<Integer>();
         for(Player z : players){ L.addLast(z.hand.size());}
         return L;
     }
 
-    private void notifyPlayers(Card card){
-        for (Player z : players) { z.update(card);}
+    public Integer getCurrentPlayer(){ return currentPlayer; }
+    public Integer getWinner(){ return winner; }
+    public boolean getDirection(){ return clockwise; }
+    public Card getPlayedCard(){ return playedCard; }
+
+    public LinkedList<Card> getHand() {
+        return null;
     }
 }
