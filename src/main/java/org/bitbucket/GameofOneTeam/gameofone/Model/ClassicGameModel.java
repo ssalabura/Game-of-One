@@ -77,12 +77,9 @@ public class ClassicGameModel implements GameModel {
         return L;
     }
 
+    public LinkedList<Player> getPlayers() { return players; }
     public Integer getCurrentPlayer(){ return currentPlayer; }
     public Integer getWinner(){ return winner; }
     public boolean getDirection(){ return clockwise; }
     public Card getPlayedCard(){ return playedCard; }
-
-    public LinkedList<Card> getHand() {
-        return null;
-    }
 }

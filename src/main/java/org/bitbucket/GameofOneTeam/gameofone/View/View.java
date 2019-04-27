@@ -5,12 +5,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class View extends Application{
+    public static Stage stage;
+    public static Scene mainMenu;
+    public static Scene classicGame;
 
     @Override
     public void start(Stage primaryStage) {
-        Scene MainMenu = new MainMenu(1280,720);
+        stage = primaryStage;
+        mainMenu = new MainMenu(1280,720);
+        classicGame = new ClassicGame(1280,720);
         primaryStage.setTitle("Game of One");
-        primaryStage.setScene(MainMenu);
+        primaryStage.setScene(mainMenu);
         primaryStage.show();
     }
 
