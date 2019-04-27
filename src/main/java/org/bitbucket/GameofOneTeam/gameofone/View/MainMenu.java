@@ -34,6 +34,7 @@ class MainMenu extends Scene {
         newgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
+                View.classicGame.newGame();
                 View.stage.setScene(View.classicGame);
             }
         });
