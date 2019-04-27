@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class EasyBot extends Player {
-    public Card move() {
+    public Card move(Card inputCard) {
         LinkedList<Card> available = getAvailable();
         if(available.isEmpty()) return null;
 
@@ -13,7 +13,7 @@ public class EasyBot extends Player {
         hand.remove(pickedCard);
         return pickedCard;
     }
-    public int changeColor() {
+    public int changeColor(Integer inputColor) {
         return new Random().nextInt(4);
     }
 }
