@@ -11,6 +11,7 @@ public class ClassicGameModel implements GameModel {
     private int cardsToAdd = 0;
     private boolean block = false;
     private int currentPlayer = 0;
+    private int prevPlayer = 0;
     private Integer winner = null;
     private Card playedCard;
 
@@ -20,22 +21,21 @@ public class ClassicGameModel implements GameModel {
 
     public ClassicGameModel(boolean demo){
 
-        for(int i=0;i<=3;i++){
+        for(int i=0;i<4;i++){
             if(demo || i!=0) players.addLast(new EasyBot());
             else players.addLast(new HumanPlayer());
 
             for(int j=1;j<=7;j++){ players.getLast().draw(deck.draw());}
         }
 
-        System.out.println("Start!");
         Card firstCard = deck.draw();
         deck.playCard(firstCard);
         notifyPlayers(firstCard);
     }
 
-    public void playNextTurn() {
+    public void playNextTurn(Card inputCard) {
         if (block) playedCard = null;
-        else playedCard = players.get(currentPlayer).move();
+        else playedCard = players.get(currentPlayer).move(inputCard);
         notifyPlayers(playedCard);
 
         if (block) block = false;
@@ -67,6 +67,7 @@ public class ClassicGameModel implements GameModel {
             }
         }
 
+        prevPlayer = currentPlayer;
         if (clockwise) currentPlayer = (currentPlayer + 1) % players.size();
         else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
     }
@@ -77,6 +78,7 @@ public class ClassicGameModel implements GameModel {
         return L;
     }
 
+    public LinkedList<Player> getPlayers() { return players; }
     public Integer getCurrentPlayer(){ return currentPlayer; }
     public Integer getWinner(){ return winner; }
     public boolean getDirection(){ return clockwise; }

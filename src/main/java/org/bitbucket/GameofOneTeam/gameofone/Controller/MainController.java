@@ -4,6 +4,6 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 
 public class MainController {
     public static void main(String... args){
-        new GameController(new ClassicGameModel(true)).startGame();
+        new GameController(new ClassicGameModel(false)).startGame();
     }
 }

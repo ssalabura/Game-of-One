@@ -6,11 +6,11 @@ import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 
 public abstract class Player {
-    LinkedList<Card> hand = new LinkedList<Card>();
+    public LinkedList<Card> hand = new LinkedList<Card>();
     Card currentCard;
     private boolean active = true;
 
-    LinkedList<Card> getAvailable(){
+    public LinkedList<Card> getAvailable(){
         LinkedList<Card> availableCards = new LinkedList<Card>();
 
         for(Card z : hand){
@@ -49,6 +49,6 @@ public abstract class Player {
         if(currentCard != null){ this.currentCard = currentCard; active = true; }
         else active = false;
     }
-    public abstract Card move();
+    public abstract Card move(Card inputCard);
     public abstract int changeColor();
 }

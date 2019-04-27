@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class EasyBot extends Player {
-    public Card move() {
+    public Card move(Card inputCard) {
         LinkedList<Card> available = getAvailable();
         if(available.isEmpty()) return null;
 
