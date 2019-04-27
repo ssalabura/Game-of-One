@@ -44,6 +44,7 @@ public abstract class Player {
         if(card != null) hand.addLast(card);
     }
 
+    public LinkedList<Card> getHand() { return hand; }
     public int getCardNumber() { return hand.size(); }
     public void update(Card currentCard) {
         if(currentCard != null){ this.currentCard = currentCard; active = true; }

@@ -1,5 +1,7 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
+import javafx.scene.image.Image;
+
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
 
@@ -7,7 +9,7 @@ public class Card {
     CardColor color;
     final CardType type;
     final int number;
-    //we also need to store path to image
+    Image image;
 
     Card(CardColor color,CardType type,int number){
         if(color == null || type==null) throw new NullPointerException("Empty argument");
@@ -19,7 +21,10 @@ public class Card {
         this.color = color;
         this.type = type;
         this.number = number;
+        image = new Image("/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase() + "_" + number + ".png");
     }
+
+    public Image getImage() { return image; }
 
     @Override
     public String toString() {

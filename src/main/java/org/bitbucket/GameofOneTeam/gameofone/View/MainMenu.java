@@ -28,10 +28,16 @@ class MainMenu extends Scene {
                        "-fx-stroke: black;" +
                        "-fx-stroke-width: 5;");
 
-        newgameBtn.setText("New Game (WIP)");
+        newgameBtn.setText("Classic Game (WIP)");
         newgameBtn.setMinSize(100,100);
         newgameBtn.setFont(btnStyle);
-        newgameBtn.setDisable(true);
+        newgameBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent event) {
+                View.classicGame.newGame();
+                View.stage.setScene(View.classicGame);
+            }
+        });
 
         settingsBtn.setText("Settings (WIP)");
         settingsBtn.setMinSize(100,100);
