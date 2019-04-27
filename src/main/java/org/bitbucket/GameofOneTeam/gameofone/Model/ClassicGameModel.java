@@ -11,7 +11,6 @@ public class ClassicGameModel implements GameModel {
     private int cardsToAdd = 0;
     private boolean block = false;
     private int currentPlayer = 0;
-    private int prevPlayer = 0;
     private Integer winner = null;
     private Card playedCard;
 
@@ -28,12 +27,12 @@ public class ClassicGameModel implements GameModel {
             for(int j=1;j<=7;j++){ players.getLast().draw(deck.draw());}
         }
 
-        Card firstCard = deck.draw();
-        deck.playCard(firstCard);
-        notifyPlayers(firstCard);
+        playedCard = deck.draw();
+        deck.playCard(playedCard);
+        notifyPlayers(playedCard);
     }
 
-    public void playNextTurn(Card inputCard) {
+    public void playNextTurn(Card inputCard, Integer color) {
         if (block) playedCard = null;
         else playedCard = players.get(currentPlayer).move(inputCard);
         notifyPlayers(playedCard);
@@ -55,19 +54,17 @@ public class ClassicGameModel implements GameModel {
                 if (playedCard.type == PLUS_TWO) cardsToAdd += 2;
                 if (playedCard.type == BLOCK) block = true;
                 if (playedCard.type == CHANGE_COLOR) {
-                    int num = players.get(currentPlayer).changeColor();
+                    int num = players.get(currentPlayer).changeColor(color);
                     playedCard.color = CardColor.values()[num];
                 }
             }
 
             if (players.get(currentPlayer).getCardNumber() == 0) {
-                //if (currentPlayer == 0 && players.get(0) instanceof HumanPlayer) System.out.println("You won!");
                 winner = currentPlayer;
                 return;
             }
         }
 
-        prevPlayer = currentPlayer;
         if (clockwise) currentPlayer = (currentPlayer + 1) % players.size();
         else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
     }

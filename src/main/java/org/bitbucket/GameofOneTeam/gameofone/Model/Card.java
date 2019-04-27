@@ -6,8 +6,8 @@ import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardColor.*;
 
 public class Card {
-    CardColor color;
-    final CardType type;
+    public CardColor color;
+    public final CardType type;
     final int number;
     Image image;
 

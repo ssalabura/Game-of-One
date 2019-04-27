@@ -1,9 +1,6 @@
 package org.bitbucket.GameofOneTeam.gameofone.Controller;
 
-import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
-import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
-import org.bitbucket.GameofOneTeam.gameofone.Model.HumanPlayer;
-import org.bitbucket.GameofOneTeam.gameofone.Model.Player;
+import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -16,7 +13,7 @@ public class GameController {
     }
 
     void startGame(){
-        System.out.println("Start!");   // No working view currently so just writing out
+        System.out.println("Start!");
 
         while(gameModel.getWinner() == null){
             Integer currentPlayer = gameModel.getCurrentPlayer();
@@ -24,6 +21,8 @@ public class GameController {
 
             if(currentPlayer == 0 && player instanceof HumanPlayer){
                 Card inputCard = null;
+                Integer color = null;
+
                 System.out.println("Your turn: " + gameModel.getPlayedCard() + " " + player.hand);
                 LinkedList<Card> available = player.getAvailable();
                 if(!available.isEmpty()) {
@@ -36,9 +35,20 @@ public class GameController {
                     int num = in.nextInt();
                     inputCard = available.remove(num);
                 }
-                gameModel.playNextTurn(inputCard);
+
+                if(inputCard != null && inputCard.type == CardType.CHANGE_COLOR){
+                    System.out.println("Choose color:");
+                    for(int i=0;i<4;i++) {
+                        System.out.println(i + " " + CardColor.values()[i]);
+                    }
+                    System.out.println("Your choice:");
+                    Scanner in = new Scanner(System.in);
+                    color = in.nextInt();
+                }
+
+                gameModel.playNextTurn(inputCard,color);
             }
-            else gameModel.playNextTurn(null);
+            else gameModel.playNextTurn(null,null);
 
             System.out.println(gameModel.getCardNumber());  // Updating number of cards for each player
             System.out.println(": " + currentPlayer + " " + gameModel.getPlayedCard()+ " :"); // Updating card on the top
