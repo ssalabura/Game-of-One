@@ -14,7 +14,7 @@ public class ClassicGameModel implements GameModel {
     private Integer winner = null;
     private Card playedCard;
 
-     private void notifyPlayers(Card card){
+    private void notifyPlayers(Card card){
         for (Player z : players) { z.update(card);}
      }
 
@@ -80,4 +80,5 @@ public class ClassicGameModel implements GameModel {
     public Integer getWinner(){ return winner; }
     public boolean getDirection(){ return clockwise; }
     public Card getPlayedCard(){ return playedCard; }
+    public Card deckTop() { return deck.top(); }
 }

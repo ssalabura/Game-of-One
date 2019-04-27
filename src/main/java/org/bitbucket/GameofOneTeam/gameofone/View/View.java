@@ -1,12 +1,14 @@
 package org.bitbucket.GameofOneTeam.gameofone.View;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class View extends Application{
     public static Stage stage;
     public static MainMenu mainMenu;
     public static ClassicGame classicGame;
+    public final static Image background = new Image("/mainmenu.jpg");
 
     @Override
     public void start(Stage primaryStage) {

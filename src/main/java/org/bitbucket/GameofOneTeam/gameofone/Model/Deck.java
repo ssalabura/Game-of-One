@@ -60,4 +60,5 @@ public class Deck {
     public int size(){
        return played_pile.size() + draw_pile.size();
     }
+    public Card top() { return played_pile.getLast(); }
 }

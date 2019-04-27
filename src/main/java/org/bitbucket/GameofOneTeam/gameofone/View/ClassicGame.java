@@ -7,9 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 
@@ -29,13 +29,19 @@ public class ClassicGame extends Scene {
     public void newGame() {
         root.getChildren().clear();
         player_cards = new HBox(-40);
-        centerBox = new HBox(150);
+        centerBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
         model = new ClassicGameModel(false);
-        for(Card c : model.getPlayers().get(0).getHand())
+        for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
+            i.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    reload_cards();
+                    //coś
+                }
+            });
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
@@ -44,20 +50,38 @@ public class ClassicGame extends Scene {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
         }
+
         exit.setText("Return to Main Menu");
-        exit.setMinSize(100,100);
         exit.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
                 View.stage.setScene(View.mainMenu);
             }
         });
+        exit.setFont(Font.font("Ubuntu Mono",20));
+        exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
         bot_cards[1].setAlignment(Pos.CENTER);
-        centerBox.getChildren().addAll(bot_cards[0],bot_cards[2]);
+        centerBox.getChildren().addAll(bot_cards[0],new ImageView(model.deckTop().getImage()),bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(bot_cards[1],centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
         root.getChildren().add(vb);
+        root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
+
+    void reload_cards() {
+        player_cards.getChildren().clear();
+        for(final Card c : model.getPlayers().get(0).getHand())
+        {
+            ImageView i = new ImageView(c.getImage());
+            i.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    reload_cards();
+                    //coś
+                }
+            });
+            player_cards.getChildren().add(i);
+        }
     }
 }
