@@ -1,18 +1,23 @@
 package org.bitbucket.GameofOneTeam.gameofone.Controller;
 
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
+import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
+import org.bitbucket.GameofOneTeam.gameofone.View.View;
 
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class GameController {
     private final GameModel gameModel;
+    private final ClassicGame gameView;
 
-    GameController(GameModel gameModel){
+    public GameController(GameModel gameModel, ClassicGame gameView){
         this.gameModel = gameModel;
+        this.gameView = gameView;
     }
 
-    void startGame(){
+    public void startGame(){
+        //View.classicGame.newGame((ClassicGameModel) gameModel);
         System.out.println("Start!");
 
         while(gameModel.getWinner() == null){
@@ -23,17 +28,19 @@ public class GameController {
                 Card inputCard = null;
                 Integer color = null;
 
-                System.out.println("Your turn: " + gameModel.getPlayedCard() + " " + player.hand);
                 LinkedList<Card> available = player.getAvailable();
                 if(!available.isEmpty()) {
-                    for (int i = 0; i < available.size(); i++) {
-                        System.out.println(i + " " + available.get(i));
-                    }
 
-                    System.out.println("Your choice (number) :");
-                    Scanner in = new Scanner(System.in);
-                    int num = in.nextInt();
-                    inputCard = available.remove(num);
+                    long currentTime = System.currentTimeMillis();
+                    System.out.println("<");
+                    do {
+                        inputCard = gameView.getCardAfter(currentTime);
+                        //System.out.println(inputCard);
+                        boolean cont = false;
+                        for(Card z : available) cont = cont || z.equals(inputCard);
+                        if(!cont) inputCard = null;
+                    } while (inputCard == null);
+                    System.out.println(">");
                 }
 
                 if(inputCard != null && inputCard.type == CardType.CHANGE_COLOR){
@@ -46,14 +53,17 @@ public class GameController {
                     color = in.nextInt();
                 }
 
+                System.out.println("turn");
                 gameModel.playNextTurn(inputCard,color);
             }
             else gameModel.playNextTurn(null,null);
 
-            System.out.println(gameModel.getCardNumber());  // Updating number of cards for each player
-            System.out.println(": " + currentPlayer + " " + gameModel.getPlayedCard()+ " :"); // Updating card on the top
+            System.out.println(": " + gameModel.getPlayedCard() + " :");
+
             if(gameModel.getDirection()) System.out.println("-->"); // Updating direction
             else System.out.println("<--");                        //
+
+            System.out.println(gameModel.getPlayers().get(0).getHand());
         }
 
         System.out.println("Player " + gameModel.getWinner() + " wins!");

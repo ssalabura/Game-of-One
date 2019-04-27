@@ -1,5 +1,6 @@
 package org.bitbucket.GameofOneTeam.gameofone.View;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -8,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
+import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 
 class MainMenu extends Scene {
     private final static Font btnStyle = Font.font("Ubuntu Mono",50);
@@ -32,7 +35,18 @@ class MainMenu extends Scene {
         newgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
-                View.classicGame.newGame();
+                //View.classicGame.newGame();
+
+                final ClassicGameModel model = new ClassicGameModel(false);
+                View.classicGame.newGame(model);
+
+                new Thread(new Task<Integer>() {
+                    @Override protected Integer call() throws Exception {
+                        new GameController(model, View.classicGame).startGame();
+                        return null;
+                    }
+                }).start();
+
                 View.stage.setScene(View.classicGame);
             }
         });
