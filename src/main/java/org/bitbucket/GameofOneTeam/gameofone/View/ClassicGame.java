@@ -57,7 +57,6 @@ public class ClassicGame extends Scene {
         topBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
-        model = new ClassicGameModel(false);
         order = new VBox(182);
         oneButton = new Button();
         for(final Card c : model.getPlayers().get(0).getHand())
