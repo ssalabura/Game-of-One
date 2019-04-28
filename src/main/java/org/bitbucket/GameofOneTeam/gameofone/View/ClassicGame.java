@@ -33,7 +33,6 @@ public class ClassicGame extends Scene {
     private static long lastClickTime;
     private static boolean choosingColor;
     private static Integer chosenColor;
-
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
@@ -46,6 +45,11 @@ public class ClassicGame extends Scene {
 
     public void reload_cards() {
         root.getChildren().clear();
+        if(model.getWinner()!=null)
+        {
+            controllerThread.stop();
+            View.victoryScreen.show(model.getWinner());
+        }
         player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);
         centerCenter = new VBox();
