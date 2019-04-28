@@ -30,6 +30,7 @@ public class ClassicGame extends Scene {
     private static Button exit;
     private static VBox vb;
     private static ImageView order;
+    private static ImageView turnIndicator;
     private static HBox topBox;
     private static Button oneButton;
     private static Card lastClickedCard;
@@ -59,6 +60,7 @@ public class ClassicGame extends Scene {
         exit = new Button();
         vb = new VBox(40);
         order = new ImageView();
+        turnIndicator = new ImageView();
         oneButton = new Button();
         for(final Card c : model.getPlayers().get(0).getHand())
         {
@@ -92,20 +94,22 @@ public class ClassicGame extends Scene {
         player_cards.setAlignment(Pos.CENTER);
         if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
+        /*This functionality is currently not implemented
         oneButton.setStyle("-fx-background-color: rgba(0, 0, 0, 0)");
         oneButton.setGraphic(new ImageView(new Image("/one_button.png", 150, 150, false, false)));
         oneButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                /* IF NOT YOUR TURN
+                 IF NOT YOUR TURN
                         Check players with 1 card and without "One" flag and give them 2 cards
-                   IF YOUR TURN
+                 IF YOUR TURN
                         Check "One" flag to true
-                 */
+
             }
-        });
+        });*/
         centerBox.getChildren().addAll(bot_cards[0],new ImageView(model.deckTop().getImage()),bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
-        topBox.getChildren().addAll(order, bot_cards[1], oneButton);
+        topBox.getChildren().addAll(order, bot_cards[1], turnIndicator);
         topBox.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
