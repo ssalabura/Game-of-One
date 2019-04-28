@@ -16,7 +16,8 @@ import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
-import static jdk.nashorn.internal.objects.NativeMath.min;
+import static java.lang.Math.min;
+
 
 public class ClassicGame extends Scene {
     private static ClassicGameModel model;
@@ -28,7 +29,8 @@ public class ClassicGame extends Scene {
     private static VBox centerCenter;
     private static Button exit;
     private static VBox vb;
-    private static VBox order;
+    private static ImageView order;
+    private static ImageView turnIndicator;
     private static HBox topBox;
     private static Button oneButton;
     private static Card lastClickedCard;
@@ -58,7 +60,8 @@ public class ClassicGame extends Scene {
         topBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
-        order = new VBox(182);
+        order = new ImageView();
+        turnIndicator = new ImageView();
         oneButton = new Button();
         for(final Card c : model.getPlayers().get(0).getHand())
         {
@@ -67,7 +70,6 @@ public class ClassicGame extends Scene {
                 public void handle(MouseEvent mouseEvent) {
                     lastClickTime = System.currentTimeMillis();
                     lastClickedCard = c;
-
                     synchronized (controllerThread){
                         controllerThread.notify();
                     }
@@ -92,18 +94,21 @@ public class ClassicGame extends Scene {
         exit.setFont(Font.font("Ubuntu Mono",20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
-        order.getChildren().add(new ImageView((new Image("/counter_clockwise.png", 150, 150, false, false))));
+        if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
+        else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
+        /*This functionality is currently not implemented
         oneButton.setStyle("-fx-background-color: rgba(0, 0, 0, 0)");
         oneButton.setGraphic(new ImageView(new Image("/one_button.png", 150, 150, false, false)));
         oneButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
-                /* IF NOT YOUR TURN
+                 IF NOT YOUR TURN
                         Check players with 1 card and without "One" flag and give them 2 cards
-                   IF YOUR TURN
+                 IF YOUR TURN
                         Check "One" flag to true
-                 */
+
             }
-        });
+        });*/
         if(lastClickedCard!=null && (lastClickedCard.type == CardType.CHANGE_COLOR || lastClickedCard.type == CardType.PLUS_FOUR) && lastClickedCard.color== CardColor.WILD) {
             Button blue = new Button("BLUE");
             blue.setFont(Font.font("Ubuntu Mono",20));
@@ -148,7 +153,7 @@ public class ClassicGame extends Scene {
         }
         centerBox.getChildren().addAll(bot_cards[0],centerCenter,bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
-        topBox.getChildren().addAll(order, bot_cards[1], oneButton);
+        topBox.getChildren().addAll(order, bot_cards[1], turnIndicator);
         topBox.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
