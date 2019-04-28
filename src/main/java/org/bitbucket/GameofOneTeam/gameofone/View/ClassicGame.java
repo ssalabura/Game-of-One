@@ -70,7 +70,9 @@ public class ClassicGame extends Scene {
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
-            bot_cards[i] = new HBox(-130 + 260/max(1,model.getPlayers().get(i+1).getCardNumber()-1));
+            bot_cards[i] = new HBox(-130 + min(100,260/max(1,model.getPlayers().get(i+1).getCardNumber()-1)));
+            bot_cards[i].setMinWidth(390);
+            bot_cards[i].setAlignment(Pos.CENTER);
             for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
