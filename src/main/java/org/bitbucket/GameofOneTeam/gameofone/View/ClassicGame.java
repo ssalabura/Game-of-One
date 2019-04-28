@@ -1,5 +1,7 @@
 package org.bitbucket.GameofOneTeam.gameofone.View;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,8 +12,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
+import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
+
+import static java.lang.Thread.sleep;
 
 public class ClassicGame extends Scene {
     private static ClassicGameModel model = new ClassicGameModel(false);
@@ -21,25 +27,37 @@ public class ClassicGame extends Scene {
     private static HBox centerBox;
     private static Button exit;
     private static VBox vb;
+    public static Card lastClickedCard;
+    public static long lastClickTime;
 
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
 
-    public void newGame() {
+    public void newGame(ClassicGameModel gameModel) {
+        model = gameModel;
+        reload_cards();
+
+        Timeline update = new Timeline(new KeyFrame(Duration.millis(400), new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) { reload_cards(); }
+        }));
+        update.setCycleCount(Timeline.INDEFINITE);
+        update.play();
+    }
+
+    public void reload_cards() {
         root.getChildren().clear();
         player_cards = new HBox(-40);
         centerBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
-        model = new ClassicGameModel(false);
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
             i.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
-                    reload_cards();
-                    //coś
+                    lastClickTime = System.currentTimeMillis();
+                    lastClickedCard = c;
                 }
             });
             player_cards.getChildren().add(i);
@@ -70,18 +88,9 @@ public class ClassicGame extends Scene {
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 
-    void reload_cards() {
-        player_cards.getChildren().clear();
-        for(final Card c : model.getPlayers().get(0).getHand())
-        {
-            ImageView i = new ImageView(c.getImage());
-            i.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent mouseEvent) {
-                    reload_cards();
-                    //coś
-                }
-            });
-            player_cards.getChildren().add(i);
-        }
+    public Card getCardAfter(long time){
+        //System.out.println(lastClickTime - time);
+        if(time > lastClickTime) return null;
+        return lastClickedCard;
     }
 }
