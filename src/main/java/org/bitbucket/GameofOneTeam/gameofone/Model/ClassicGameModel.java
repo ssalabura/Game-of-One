@@ -55,7 +55,7 @@ public class ClassicGameModel implements GameModel {
                 if (playedCard.type == PLUS_FOUR) cardsToAdd += 4;
                 if (playedCard.type == PLUS_TWO) cardsToAdd += 2;
                 if (playedCard.type == BLOCK) block = true;
-                if (playedCard.type == CHANGE_COLOR) {
+                if (playedCard.type == CHANGE_COLOR || playedCard.type == PLUS_FOUR) {
                     int num = players.get(currentPlayer).changeColor(color);
                     playedCard.color = CardColor.values()[num];
                     playedCard.updateImage();
