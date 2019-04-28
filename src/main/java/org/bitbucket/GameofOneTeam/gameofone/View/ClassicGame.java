@@ -17,7 +17,8 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
 
-import static jdk.nashorn.internal.objects.NativeMath.min;
+import static java.lang.Math.min;
+
 
 public class ClassicGame extends Scene {
     private static ClassicGameModel model;
@@ -28,7 +29,7 @@ public class ClassicGame extends Scene {
     private static HBox centerBox;
     private static Button exit;
     private static VBox vb;
-    private static VBox order;
+    private static ImageView order;
     private static HBox topBox;
     private static Button oneButton;
     private static Card lastClickedCard;
@@ -57,7 +58,7 @@ public class ClassicGame extends Scene {
         topBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
-        order = new VBox(182);
+        order = new ImageView();
         oneButton = new Button();
         for(final Card c : model.getPlayers().get(0).getHand())
         {
@@ -66,7 +67,6 @@ public class ClassicGame extends Scene {
                 public void handle(MouseEvent mouseEvent) {
                     lastClickTime = System.currentTimeMillis();
                     lastClickedCard = c;
-
                     synchronized (controllerThread){
                         controllerThread.notify();
                     }
@@ -90,7 +90,8 @@ public class ClassicGame extends Scene {
         exit.setFont(Font.font("Ubuntu Mono",20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
-        order.getChildren().add(new ImageView((new Image("/counter_clockwise.png", 150, 150, false, false))));
+        if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
+        else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         oneButton.setStyle("-fx-background-color: rgba(0, 0, 0, 0)");
         oneButton.setGraphic(new ImageView(new Image("/one_button.png", 150, 150, false, false)));
         oneButton.setOnAction(new EventHandler<ActionEvent>() {
