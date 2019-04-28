@@ -46,12 +46,12 @@ public class ClassicGame extends Scene {
 
     public void reload_cards() {
         root.getChildren().clear();
-        //if(model.getWinner()!=null)
-        //{
-            onVictory.setWinner(0);
-            View.stage.setScene(onVictory);Thread.currentThread().stop();
+        if(model.getWinner()!=null)
+        {
+            onVictory.setWinner(model.getWinner());
+            View.stage.setScene(onVictory);controllerThread.stop();
             View.stage.show();
-        //}
+        }
         player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);
         centerCenter = new VBox();
