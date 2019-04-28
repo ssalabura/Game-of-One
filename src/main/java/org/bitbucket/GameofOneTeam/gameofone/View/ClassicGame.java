@@ -99,7 +99,7 @@ public class ClassicGame extends Scene {
                  IF YOUR TURN
                         Check "One" flag to true
 
-            }
+            } */
         if(choosingColor) {
             Button blue = new Button("BLUE");
             blue.setFont(Font.font("Ubuntu Mono",20));
