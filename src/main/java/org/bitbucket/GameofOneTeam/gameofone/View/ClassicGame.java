@@ -17,10 +17,11 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
 
-import static java.lang.Thread.sleep;
+import static jdk.nashorn.internal.objects.NativeMath.min;
 
 public class ClassicGame extends Scene {
-    private static ClassicGameModel model = new ClassicGameModel(false);
+    private static ClassicGameModel model;
+    private static Thread controllerThread;
     private static StackPane root = new StackPane();
     private static HBox player_cards;
     private static HBox[] bot_cards = new HBox[3];
@@ -30,18 +31,19 @@ public class ClassicGame extends Scene {
     private static VBox order;
     private static HBox topBox;
     private static Button oneButton;
-    public static Card lastClickedCard;
-    public static long lastClickTime;
+    private static Card lastClickedCard;
+    private static long lastClickTime;
 
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
 
-    public void newGame(ClassicGameModel gameModel) {
+    public void newGame(ClassicGameModel gameModel, Thread cT) {
         model = gameModel;
+        controllerThread = cT;
         reload_cards();
 
-        Timeline update = new Timeline(new KeyFrame(Duration.millis(400), new EventHandler<ActionEvent>() {
+        Timeline update = new Timeline(new KeyFrame(Duration.millis(333), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) { reload_cards(); }
         }));
         update.setCycleCount(Timeline.INDEFINITE);
@@ -50,7 +52,7 @@ public class ClassicGame extends Scene {
 
     public void reload_cards() {
         root.getChildren().clear();
-        player_cards = new HBox(-40);
+        player_cards = new HBox(-40 - min(20,model.getPlayers().get(0).getHand().size() * 2));
         centerBox = new HBox(100);
         topBox = new HBox(100);
         exit = new Button();
@@ -65,12 +67,16 @@ public class ClassicGame extends Scene {
                 public void handle(MouseEvent mouseEvent) {
                     lastClickTime = System.currentTimeMillis();
                     lastClickedCard = c;
+
+                    synchronized (controllerThread){
+                        controllerThread.notify();
+                    }
                 }
             });
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
-            bot_cards[i] = new HBox(-80);
+            bot_cards[i] = new HBox(-60 - min(60,model.getPlayers().get(i+1).getCardNumber()*4));
             for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
@@ -108,7 +114,6 @@ public class ClassicGame extends Scene {
     }
 
     public Card getCardAfter(long time){
-        //System.out.println(lastClickTime - time);
         if(time > lastClickTime) return null;
         return lastClickedCard;
     }

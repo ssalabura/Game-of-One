@@ -10,6 +10,7 @@ public interface GameModel {
     void playNextTurn(Card inputCard, Integer color);
     Integer getWinner();  // null if game has not ended
     LinkedList<Integer> getCardNumber();
+    public boolean getBlock();
     boolean getDirection(); // true if clockwise
     Card getPlayedCard();
 }

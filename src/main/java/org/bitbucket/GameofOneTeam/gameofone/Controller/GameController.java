@@ -16,15 +16,14 @@ public class GameController {
         this.gameView = gameView;
     }
 
-    public void startGame(){
-        //View.classicGame.newGame((ClassicGameModel) gameModel);
+    public void startGame() throws InterruptedException {
         System.out.println("Start!");
 
         while(gameModel.getWinner() == null){
             Integer currentPlayer = gameModel.getCurrentPlayer();
             Player player = gameModel.getPlayers().get(currentPlayer);
 
-            if(currentPlayer == 0 && player instanceof HumanPlayer){
+            if(currentPlayer == 0 && player instanceof HumanPlayer && !gameModel.getBlock()){
                 Card inputCard = null;
                 Integer color = null;
 
@@ -32,15 +31,16 @@ public class GameController {
                 if(!available.isEmpty()) {
 
                     long currentTime = System.currentTimeMillis();
-                    System.out.println("<");
                     do {
+                        synchronized (Thread.currentThread()){
+                                Thread.currentThread().wait(100);
+                        }
+
                         inputCard = gameView.getCardAfter(currentTime);
-                        //System.out.println(inputCard);
                         boolean cont = false;
                         for(Card z : available) cont = cont || z.equals(inputCard);
                         if(!cont) inputCard = null;
                     } while (inputCard == null);
-                    System.out.println(">");
                 }
 
                 if(inputCard != null && inputCard.type == CardType.CHANGE_COLOR){

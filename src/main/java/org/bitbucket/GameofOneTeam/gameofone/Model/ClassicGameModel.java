@@ -56,6 +56,7 @@ public class ClassicGameModel implements GameModel {
                 if (playedCard.type == CHANGE_COLOR) {
                     int num = players.get(currentPlayer).changeColor(color);
                     playedCard.color = CardColor.values()[num];
+                    playedCard.updateImage();
                 }
             }
 
@@ -80,5 +81,6 @@ public class ClassicGameModel implements GameModel {
     public Integer getWinner(){ return winner; }
     public boolean getDirection(){ return clockwise; }
     public Card getPlayedCard(){ return playedCard; }
+    public boolean getBlock(){return block;}
     public Card deckTop() { return deck.top(); }
 }
