@@ -13,7 +13,6 @@ import javafx.scene.text.Font;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
 import static java.lang.Math.*;
-import static org.bitbucket.GameofOneTeam.gameofone.View.View.victoryScreen;
 
 
 public class ClassicGame extends Scene {
@@ -49,7 +48,7 @@ public class ClassicGame extends Scene {
         if(model.getWinner()!=null)
         {
             controllerThread.stop();
-            victoryScreen.show(model.getWinner());
+            View.victoryScreen.show(model.getWinner());
         }
         player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);
