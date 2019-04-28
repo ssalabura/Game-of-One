@@ -23,7 +23,7 @@ public class GameController {
             Integer currentPlayer = gameModel.getCurrentPlayer();
             Player player = gameModel.getPlayers().get(currentPlayer);
 
-            if(currentPlayer == 0 && player instanceof HumanPlayer){
+            if(currentPlayer == 0 && player instanceof HumanPlayer && !gameModel.getBlock()){
                 Card inputCard = null;
                 Integer color = null;
 
@@ -32,7 +32,6 @@ public class GameController {
 
                     long currentTime = System.currentTimeMillis();
                     do {
-
                         synchronized (Thread.currentThread()){
                                 Thread.currentThread().wait(100);
                         }
