@@ -1,6 +1,5 @@
 package org.bitbucket.GameofOneTeam.gameofone.View;
 
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,9 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
-import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
-import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 
 public class VictoryScreen extends Scene {
     private static Font btnStyle = Font.font("Ubuntu Mono",50);
@@ -21,11 +17,10 @@ public class VictoryScreen extends Scene {
     private static Button backToMenuButton = new Button();
     private static Text title = new Text("Game Finished!");
     private static Text winner = new Text();
-    private static int winnerNum = 0;
     public VictoryScreen(int w, int h) {
         super(victoryRoot, w, h);
     }
-    public void setWinner(int i){
+    public void show(int winnerNum) {
         button = new VBox(20);
         vb  = new VBox(50);
         victoryRoot.getChildren().clear();
@@ -44,7 +39,6 @@ public class VictoryScreen extends Scene {
         backToMenuButton.setMaxSize(250,30);
         button.getChildren().add(backToMenuButton);
         button.setAlignment(Pos.CENTER);
-        winnerNum = i;
         if(winnerNum==0) winner = new Text("Congratulations, you win!");
         else winner = new Text("Player "+winnerNum+" wins! You lose!");
         winner.setFont(Font.font("Open Sans",80));
@@ -55,5 +49,6 @@ public class VictoryScreen extends Scene {
         vb.setAlignment(Pos.CENTER);
         victoryRoot.getChildren().add(vb);
         victoryRoot.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        View.stage.setScene(this);
     }
 }

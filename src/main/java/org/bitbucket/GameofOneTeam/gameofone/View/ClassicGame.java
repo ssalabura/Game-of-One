@@ -13,6 +13,7 @@ import javafx.scene.text.Font;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
 import static java.lang.Math.*;
+import static org.bitbucket.GameofOneTeam.gameofone.View.View.victoryScreen;
 
 
 public class ClassicGame extends Scene {
@@ -33,7 +34,6 @@ public class ClassicGame extends Scene {
     private static long lastClickTime;
     private static boolean choosingColor;
     private static Integer chosenColor;
-    private static VictoryScreen onVictory = new VictoryScreen(1280, 720);;
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
@@ -48,9 +48,8 @@ public class ClassicGame extends Scene {
         root.getChildren().clear();
         if(model.getWinner()!=null)
         {
-            onVictory.setWinner(model.getWinner());
-            View.stage.setScene(onVictory);controllerThread.stop();
-            View.stage.show();
+            controllerThread.stop();
+            victoryScreen.show(model.getWinner());
         }
         player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);

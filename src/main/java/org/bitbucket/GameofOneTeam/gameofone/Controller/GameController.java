@@ -3,8 +3,6 @@ package org.bitbucket.GameofOneTeam.gameofone.Controller;
 import javafx.application.Platform;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
-import org.bitbucket.GameofOneTeam.gameofone.View.VictoryScreen;
-import org.bitbucket.GameofOneTeam.gameofone.View.View;
 
 import java.util.LinkedList;
 
