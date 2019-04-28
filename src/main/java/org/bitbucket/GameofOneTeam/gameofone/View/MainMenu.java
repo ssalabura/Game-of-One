@@ -38,15 +38,16 @@ class MainMenu extends Scene {
                 //View.classicGame.newGame();
 
                 final ClassicGameModel model = new ClassicGameModel(false);
-                View.classicGame.newGame(model);
 
-                new Thread(new Task<Integer>() {
+                Thread T =  new Thread(new Task<Integer>() {
                     @Override protected Integer call() throws Exception {
                         new GameController(model, View.classicGame).startGame();
                         return null;
                     }
-                }).start();
+                });
 
+                View.classicGame.newGame(model,T);
+                T.start();
                 View.stage.setScene(View.classicGame);
             }
         });

@@ -20,22 +20,24 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
 import static java.lang.Thread.sleep;
 
 public class ClassicGame extends Scene {
-    private static ClassicGameModel model = new ClassicGameModel(false);
+    private static ClassicGameModel model;
+    private static Thread controllerThread;
     private static StackPane root = new StackPane();
     private static HBox player_cards;
     private static HBox[] bot_cards = new HBox[3];
     private static HBox centerBox;
     private static Button exit;
     private static VBox vb;
-    public static Card lastClickedCard;
-    public static long lastClickTime;
+    private static Card lastClickedCard;
+    private static long lastClickTime;
 
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
 
-    public void newGame(ClassicGameModel gameModel) {
+    public void newGame(ClassicGameModel gameModel, Thread cT) {
         model = gameModel;
+        controllerThread = cT;
         reload_cards();
 
         Timeline update = new Timeline(new KeyFrame(Duration.millis(400), new EventHandler<ActionEvent>() {
@@ -58,6 +60,10 @@ public class ClassicGame extends Scene {
                 public void handle(MouseEvent mouseEvent) {
                     lastClickTime = System.currentTimeMillis();
                     lastClickedCard = c;
+
+                    synchronized (controllerThread){
+                        controllerThread.notify();
+                    }
                 }
             });
             player_cards.getChildren().add(i);
@@ -89,7 +95,6 @@ public class ClassicGame extends Scene {
     }
 
     public Card getCardAfter(long time){
-        //System.out.println(lastClickTime - time);
         if(time > lastClickTime) return null;
         return lastClickedCard;
     }
