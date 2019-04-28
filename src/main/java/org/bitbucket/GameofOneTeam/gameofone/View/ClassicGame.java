@@ -18,6 +18,7 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
 
 import static java.lang.Thread.sleep;
+import static jdk.nashorn.internal.objects.NativeMath.max;
 
 public class ClassicGame extends Scene {
     private static ClassicGameModel model;
@@ -40,7 +41,7 @@ public class ClassicGame extends Scene {
         controllerThread = cT;
         reload_cards();
 
-        Timeline update = new Timeline(new KeyFrame(Duration.millis(400), new EventHandler<ActionEvent>() {
+        Timeline update = new Timeline(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) { reload_cards(); }
         }));
         update.setCycleCount(Timeline.INDEFINITE);
@@ -49,7 +50,7 @@ public class ClassicGame extends Scene {
 
     public void reload_cards() {
         root.getChildren().clear();
-        player_cards = new HBox(-40);
+        player_cards = new HBox(-40 - max(15,model.getPlayers().get(0).getHand().size() * 2));
         centerBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
@@ -69,7 +70,7 @@ public class ClassicGame extends Scene {
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
-            bot_cards[i] = new HBox(-80);
+            bot_cards[i] = new HBox(-60 - max(60,model.getPlayers().get(i+1).getCardNumber()*4));
             for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
