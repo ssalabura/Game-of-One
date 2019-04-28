@@ -56,6 +56,7 @@ public class ClassicGameModel implements GameModel {
                 if (playedCard.type == CHANGE_COLOR) {
                     int num = players.get(currentPlayer).changeColor(color);
                     playedCard.color = CardColor.values()[num];
+                    playedCard.updateImage();
                 }
             }
 

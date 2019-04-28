@@ -26,6 +26,8 @@ public class Card {
 
     public Image getImage() { return image; }
 
+    public void updateImage() { image = new Image("/" + color.toString().toLowerCase() + "_" + type.toString().toLowerCase() + "_" + number + ".png"); }
+
     @Override
     public String toString() {
         return color.toString() + " " + type.toString() + " " + number;
