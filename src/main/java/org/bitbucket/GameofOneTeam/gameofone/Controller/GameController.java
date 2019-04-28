@@ -1,8 +1,8 @@
 package org.bitbucket.GameofOneTeam.gameofone.Controller;
 
+import javafx.application.Platform;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
-import org.bitbucket.GameofOneTeam.gameofone.View.View;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -17,7 +17,6 @@ public class GameController {
     }
 
     public void startGame() throws InterruptedException {
-        System.out.println("Start!");
 
         while(gameModel.getWinner() == null){
             Integer currentPlayer = gameModel.getCurrentPlayer();
@@ -44,28 +43,34 @@ public class GameController {
                 }
 
                 if(inputCard != null && inputCard.type == CardType.CHANGE_COLOR){
-                    System.out.println("Choose color:");
-                    for(int i=0;i<4;i++) {
-                        System.out.println(i + " " + CardColor.values()[i]);
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            gameView.chooseColor();
+                        }
+                    });
+
+                    synchronized (Thread.currentThread()) {
+                        Thread.currentThread().wait();
                     }
-                    System.out.println("Your choice:");
-                    Scanner in = new Scanner(System.in);
-                    color = in.nextInt();
+
+                    color = gameView.getChosenColor();
                 }
 
-                System.out.println("turn");
                 gameModel.playNextTurn(inputCard,color);
             }
             else gameModel.playNextTurn(null,null);
 
-            System.out.println(": " + gameModel.getPlayedCard() + " :");
-
-            if(gameModel.getDirection()) System.out.println("-->"); // Updating direction
-            else System.out.println("<--");                        //
-
-            System.out.println(gameModel.getPlayers().get(0).getHand());
+            Platform.runLater(new Runnable() {
+                public void run() {
+                    gameView.reload_cards();
+                }
+            });
         }
 
-        System.out.println("Player " + gameModel.getWinner() + " wins!");
+        Platform.runLater(new Runnable() {
+            public void run() {
+                gameView.reload_cards();
+            }
+        });
     }
 }

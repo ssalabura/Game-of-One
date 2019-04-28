@@ -1,7 +1,5 @@
 package org.bitbucket.GameofOneTeam.gameofone.View;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -12,8 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
-import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
 import static jdk.nashorn.internal.objects.NativeMath.min;
@@ -33,6 +29,8 @@ public class ClassicGame extends Scene {
     private static Button oneButton;
     private static Card lastClickedCard;
     private static long lastClickTime;
+    private static boolean choosingColor;
+    private static Integer chosenColor;
 
     ClassicGame(int w, int h) {
         super(root, w, h);
@@ -42,12 +40,6 @@ public class ClassicGame extends Scene {
         model = gameModel;
         controllerThread = cT;
         reload_cards();
-
-        Timeline update = new Timeline(new KeyFrame(Duration.millis(333), new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) { reload_cards(); }
-        }));
-        update.setCycleCount(Timeline.INDEFINITE);
-        update.play();
     }
 
     public void reload_cards() {
@@ -104,14 +96,19 @@ public class ClassicGame extends Scene {
                  */
             }
         });
-        if(lastClickedCard!=null && (lastClickedCard.type == CardType.CHANGE_COLOR || lastClickedCard.type == CardType.PLUS_FOUR) && lastClickedCard.color== CardColor.WILD) {
+        if(choosingColor) {
             Button blue = new Button("BLUE");
             blue.setFont(Font.font("Ubuntu Mono",20));
             blue.setStyle("-fx-background-color: #00c3e5");
             blue.setMinSize(150,45);
             blue.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
-                    //zmień kolor
+                    chosenColor = 0;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                    reload_cards();
                 }
             });
             Button red = new Button("RED");
@@ -120,7 +117,12 @@ public class ClassicGame extends Scene {
             red.setMinSize(150,45);
             red.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
-                    //zmień kolor
+                    chosenColor = 2;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                    reload_cards();
                 }
             });
             Button green = new Button("GREEN");
@@ -129,7 +131,12 @@ public class ClassicGame extends Scene {
             green.setMinSize(150,45);
             green.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
-                    //zmień kolor
+                    chosenColor = 1;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                    reload_cards();
                 }
             });
             Button yellow = new Button("YELLOW");
@@ -138,7 +145,12 @@ public class ClassicGame extends Scene {
             yellow.setMinSize(150,45);
             yellow.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
-                    //zmień kolor
+                    chosenColor = 3;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                    reload_cards();
                 }
             });
             centerCenter.getChildren().addAll(blue,red,green,yellow);
@@ -154,10 +166,20 @@ public class ClassicGame extends Scene {
         vb.setAlignment(Pos.CENTER);
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        choosingColor = false;
     }
 
     public Card getCardAfter(long time){
         if(time > lastClickTime) return null;
         return lastClickedCard;
+    }
+
+    public Integer getChosenColor(){
+        return chosenColor;
+    }
+
+    public void chooseColor() {
+        choosingColor = true;
+        reload_cards();
     }
 }
