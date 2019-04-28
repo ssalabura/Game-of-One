@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
+import org.bitbucket.GameofOneTeam.gameofone.Model.CardType;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
 
@@ -26,6 +27,7 @@ public class ClassicGame extends Scene {
     private static HBox player_cards;
     private static HBox[] bot_cards = new HBox[3];
     private static HBox centerBox;
+    private static VBox centerCenter;
     private static Button exit;
     private static VBox vb;
     private static VBox order;
@@ -54,6 +56,7 @@ public class ClassicGame extends Scene {
         root.getChildren().clear();
         player_cards = new HBox(-40 - min(20,model.getPlayers().get(0).getHand().size() * 2));
         centerBox = new HBox(100);
+        centerCenter = new VBox();
         topBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
@@ -102,7 +105,49 @@ public class ClassicGame extends Scene {
                  */
             }
         });
-        centerBox.getChildren().addAll(bot_cards[0],new ImageView(model.deckTop().getImage()),bot_cards[2]);
+        if(lastClickedCard!=null && (lastClickedCard.type == CardType.CHANGE_COLOR || lastClickedCard.type == CardType.PLUS_FOUR)) {
+            Button blue = new Button("BLUE");
+            blue.setFont(Font.font("Ubuntu Mono",20));
+            blue.setStyle("-fx-background-color: #00c3e5");
+            blue.setMinSize(200,45);
+            blue.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    //zmień kolor
+                }
+            });
+            Button red = new Button("RED");
+            red.setFont(Font.font("Ubuntu Mono",20));
+            red.setStyle("-fx-background-color: #f56462");
+            red.setMinSize(200,45);
+            red.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    //zmień kolor
+                }
+            });
+            Button green = new Button("GREEN");
+            green.setFont(Font.font("Ubuntu Mono",20));
+            green.setStyle("-fx-background-color: #2fe29b");
+            green.setMinSize(200,45);
+            green.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    //zmień kolor
+                }
+            });
+            Button yellow = new Button("YELLOW");
+            yellow.setFont(Font.font("Ubuntu Mono",20));
+            yellow.setStyle("-fx-background-color: #f7e359");
+            yellow.setMinSize(200,45);
+            yellow.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    //zmień kolor
+                }
+            });
+            centerCenter.getChildren().addAll(blue,red,green,yellow);
+        }
+        else {
+            centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
+        }
+        centerBox.getChildren().addAll(bot_cards[0],centerCenter,bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
         topBox.getChildren().addAll(order, bot_cards[1], oneButton);
         topBox.setAlignment(Pos.CENTER);
