@@ -13,10 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import org.bitbucket.GameofOneTeam.gameofone.Model.Card;
-import org.bitbucket.GameofOneTeam.gameofone.Model.CardType;
-import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
-import org.bitbucket.GameofOneTeam.gameofone.Model.GameModel;
+import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
+import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
 import static jdk.nashorn.internal.objects.NativeMath.min;
 
@@ -88,6 +86,7 @@ public class ClassicGame extends Scene {
 
             public void handle(ActionEvent event) {
                 View.stage.setScene(View.mainMenu);
+                controllerThread.stop();
             }
         });
         exit.setFont(Font.font("Ubuntu Mono",20));
@@ -105,11 +104,11 @@ public class ClassicGame extends Scene {
                  */
             }
         });
-        if(lastClickedCard!=null && (lastClickedCard.type == CardType.CHANGE_COLOR || lastClickedCard.type == CardType.PLUS_FOUR)) {
+        if(lastClickedCard!=null && (lastClickedCard.type == CardType.CHANGE_COLOR || lastClickedCard.type == CardType.PLUS_FOUR) && lastClickedCard.color== CardColor.WILD) {
             Button blue = new Button("BLUE");
             blue.setFont(Font.font("Ubuntu Mono",20));
             blue.setStyle("-fx-background-color: #00c3e5");
-            blue.setMinSize(200,45);
+            blue.setMinSize(150,45);
             blue.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
                     //zmień kolor
@@ -118,7 +117,7 @@ public class ClassicGame extends Scene {
             Button red = new Button("RED");
             red.setFont(Font.font("Ubuntu Mono",20));
             red.setStyle("-fx-background-color: #f56462");
-            red.setMinSize(200,45);
+            red.setMinSize(150,45);
             red.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
                     //zmień kolor
@@ -127,7 +126,7 @@ public class ClassicGame extends Scene {
             Button green = new Button("GREEN");
             green.setFont(Font.font("Ubuntu Mono",20));
             green.setStyle("-fx-background-color: #2fe29b");
-            green.setMinSize(200,45);
+            green.setMinSize(150,45);
             green.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
                     //zmień kolor
@@ -136,7 +135,7 @@ public class ClassicGame extends Scene {
             Button yellow = new Button("YELLOW");
             yellow.setFont(Font.font("Ubuntu Mono",20));
             yellow.setStyle("-fx-background-color: #f7e359");
-            yellow.setMinSize(200,45);
+            yellow.setMinSize(150,45);
             yellow.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent mouseEvent) {
                     //zmień kolor
