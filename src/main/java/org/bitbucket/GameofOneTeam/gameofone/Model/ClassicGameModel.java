@@ -1,5 +1,7 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
+import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
+
 import java.util.LinkedList;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
@@ -7,7 +9,7 @@ import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
 public class ClassicGameModel implements GameModel {
     private LinkedList<Player> players = new LinkedList<Player>();
     private Deck deck = new Deck(1);
-    private boolean clockwise = true;
+    public boolean clockwise = true;
     private int cardsToAdd = 0;
     private boolean block = false;
     private int currentPlayer = 0;
