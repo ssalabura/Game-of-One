@@ -42,7 +42,7 @@ public class GameController {
                     } while (inputCard == null);
                 }
 
-                if(inputCard != null && inputCard.type == CardType.CHANGE_COLOR){
+                if(inputCard != null && (inputCard.type == CardType.CHANGE_COLOR || inputCard.type == CardType.PLUS_FOUR )){
                     Platform.runLater(new Runnable() {
                         public void run() {
                             gameView.chooseColor();
