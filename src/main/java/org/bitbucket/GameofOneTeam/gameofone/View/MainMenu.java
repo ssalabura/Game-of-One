@@ -22,7 +22,6 @@ class MainMenu extends Scene {
     private final static Button exitgameBtn = new Button();
     private final static Text title = new Text("Game of One");
     static {
-        // System.out.println(Font.getFamilies()); -- all fonts
 
         title.setFont(Font.font("Open Sans",150));
         title.setStyle("-fx-fill: white;" +
@@ -35,8 +34,6 @@ class MainMenu extends Scene {
         newgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
-                //View.classicGame.newGame();
-
                 final ClassicGameModel model = new ClassicGameModel(false);
 
                 Thread T =  new Thread(new Task<Integer>() {

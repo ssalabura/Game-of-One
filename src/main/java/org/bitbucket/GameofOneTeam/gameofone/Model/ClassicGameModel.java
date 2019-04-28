@@ -1,7 +1,5 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
-import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
-
 import java.util.LinkedList;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
@@ -81,8 +79,6 @@ public class ClassicGameModel implements GameModel {
     public LinkedList<Player> getPlayers() { return players; }
     public Integer getCurrentPlayer(){ return currentPlayer; }
     public Integer getWinner(){ return winner; }
-    public boolean getDirection(){ return clockwise; }
-    public Card getPlayedCard(){ return playedCard; }
     public boolean getBlock(){return block;}
     public Card deckTop() { return deck.top(); }
 }

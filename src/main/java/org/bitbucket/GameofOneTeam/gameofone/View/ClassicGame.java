@@ -91,7 +91,10 @@ public class ClassicGame extends Scene {
         if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
-        /*This functionality is currently not implemented
+
+        /*
+        This functionality is currently not implemented
+
         oneButton.setStyle("-fx-background-color: rgba(0, 0, 0, 0)");
         oneButton.setGraphic(new ImageView(new Image("/one_button.png", 150, 150, false, false)));
         oneButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -100,8 +103,10 @@ public class ClassicGame extends Scene {
                         Check players with 1 card and without "One" flag and give them 2 cards
                  IF YOUR TURN
                         Check "One" flag to true
+            }
+        }
+        */
 
-            } */
         if(choosingColor) {
             Button blue = new Button("BLUE");
             blue.setFont(Font.font("Ubuntu Mono",20));

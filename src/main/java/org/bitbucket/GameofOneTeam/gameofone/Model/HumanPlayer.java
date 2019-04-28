@@ -1,7 +1,5 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
-import java.util.Scanner;
-
 public class HumanPlayer extends Player{
     public Card move(Card inputCard) {
 
