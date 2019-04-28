@@ -9,14 +9,12 @@ import java.util.LinkedList;
 public class GameController {
     private final GameModel gameModel;
     private final ClassicGame gameView;
-
     public GameController(GameModel gameModel, ClassicGame gameView){
         this.gameModel = gameModel;
         this.gameView = gameView;
     }
 
     public void startGame() throws InterruptedException {
-
         while(gameModel.getWinner() == null){
             Integer currentPlayer = gameModel.getCurrentPlayer();
             Player player = gameModel.getPlayers().get(currentPlayer);
