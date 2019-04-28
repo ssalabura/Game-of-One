@@ -28,6 +28,9 @@ public class ClassicGame extends Scene {
     private static HBox centerBox;
     private static Button exit;
     private static VBox vb;
+    private static VBox order;
+    private static HBox topBox;
+    private static Button oneButton;
     private static Card lastClickedCard;
     private static long lastClickTime;
 
@@ -51,8 +54,12 @@ public class ClassicGame extends Scene {
         root.getChildren().clear();
         player_cards = new HBox(-40 - min(20,model.getPlayers().get(0).getHand().size() * 2));
         centerBox = new HBox(100);
+        topBox = new HBox(100);
         exit = new Button();
         vb = new VBox(40);
+        model = new ClassicGameModel(false);
+        order = new VBox(182);
+        oneButton = new Button();
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
@@ -74,7 +81,6 @@ public class ClassicGame extends Scene {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
         }
-
         exit.setText("Return to Main Menu");
         exit.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -85,10 +91,23 @@ public class ClassicGame extends Scene {
         exit.setFont(Font.font("Ubuntu Mono",20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
-        bot_cards[1].setAlignment(Pos.CENTER);
+        order.getChildren().add(new ImageView((new Image("/counter_clockwise.png", 150, 150, false, false))));
+        oneButton.setStyle("-fx-background-color: rgba(0, 0, 0, 0)");
+        oneButton.setGraphic(new ImageView(new Image("/one_button.png", 150, 150, false, false)));
+        oneButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                /* IF NOT YOUR TURN
+                        Check players with 1 card and without "One" flag and give them 2 cards
+                   IF YOUR TURN
+                        Check "One" flag to true
+                 */
+            }
+        });
         centerBox.getChildren().addAll(bot_cards[0],new ImageView(model.deckTop().getImage()),bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(bot_cards[1],centerBox,player_cards,exit);
+        topBox.getChildren().addAll(order, bot_cards[1], oneButton);
+        topBox.setAlignment(Pos.CENTER);
+        vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
