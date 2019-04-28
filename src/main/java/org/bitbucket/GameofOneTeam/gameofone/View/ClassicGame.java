@@ -43,7 +43,7 @@ public class ClassicGame extends Scene {
         reload_cards();
     }
 
-    public void reload_cards() {
+    public synchronized void reload_cards() {
         root.getChildren().clear();
         if(model.getWinner()!=null)
         {
