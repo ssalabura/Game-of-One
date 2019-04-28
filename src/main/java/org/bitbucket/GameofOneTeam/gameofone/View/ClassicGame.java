@@ -64,7 +64,7 @@ public class ClassicGame extends Scene {
         }
         for(int i=0;i<3;i++) {
             bot_cards[i] = new HBox(-80);
-            for(int j=0;j<model.getPlayers().get(i).getCardNumber();j++) {
+            for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
         }
