@@ -58,15 +58,19 @@ public class ClassicGame extends Scene {
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
-            i.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent mouseEvent) {
-                    lastClickTime = System.currentTimeMillis();
-                    lastClickedCard = c;
-                    synchronized (controllerThread){
-                        controllerThread.notify();
+
+            if(!choosingColor) {
+                i.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent mouseEvent) {
+                        lastClickTime = System.currentTimeMillis();
+                        lastClickedCard = c;
+
+                        synchronized (controllerThread) {
+                            controllerThread.notify();
+                        }
                     }
-                }
-            });
+                });
+            }
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
