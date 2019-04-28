@@ -3,20 +3,20 @@ package org.bitbucket.GameofOneTeam.gameofone.Controller;
 import javafx.application.Platform;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
+import org.bitbucket.GameofOneTeam.gameofone.View.VictoryScreen;
+import org.bitbucket.GameofOneTeam.gameofone.View.View;
 
 import java.util.LinkedList;
 
 public class GameController {
     private final GameModel gameModel;
     private final ClassicGame gameView;
-
     public GameController(GameModel gameModel, ClassicGame gameView){
         this.gameModel = gameModel;
         this.gameView = gameView;
     }
 
     public void startGame() throws InterruptedException {
-
         while(gameModel.getWinner() == null){
             Integer currentPlayer = gameModel.getCurrentPlayer();
             Player player = gameModel.getPlayers().get(currentPlayer);
