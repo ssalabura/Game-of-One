@@ -12,7 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 
 public class ClassicGame extends Scene {
@@ -46,7 +46,7 @@ public class ClassicGame extends Scene {
 
     public void reload_cards() {
         root.getChildren().clear();
-        player_cards = new HBox(-40 - min(20,model.getPlayers().get(0).getHand().size() * 2));
+        player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);
         centerCenter = new VBox();
         topBox = new HBox(100);
@@ -70,7 +70,7 @@ public class ClassicGame extends Scene {
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
-            bot_cards[i] = new HBox(-60 - min(60,model.getPlayers().get(i+1).getCardNumber()*4));
+            bot_cards[i] = new HBox(-130 + 260/max(1,model.getPlayers().get(i+1).getCardNumber()-1));
             for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
             }
