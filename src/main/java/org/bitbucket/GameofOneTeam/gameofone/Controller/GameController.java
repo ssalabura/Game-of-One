@@ -5,7 +5,6 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
 
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class GameController {
     private final GameModel gameModel;

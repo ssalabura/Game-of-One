@@ -50,6 +50,8 @@ public class Deck {
             shuffle();
         }
 
+        if(draw_pile.getLast().type == PLUS_FOUR || draw_pile.getLast().type == CHANGE_COLOR) draw_pile.getLast().color=WILD;
+        draw_pile.getLast().updateImage();
         return draw_pile.removeLast();
     }
 
