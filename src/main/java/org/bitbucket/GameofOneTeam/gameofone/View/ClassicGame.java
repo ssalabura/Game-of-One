@@ -201,4 +201,25 @@ public class ClassicGame extends Scene {
         choosingColor = true;
         reload_cards();
     }
+
+    public void updateBotMove(int id) {
+        if(model.getPlayedCard()!=null){
+            bot_cards[id-1].getChildren().remove(0);
+            bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
+        }
+
+        else {
+            while (bot_cards[id - 1].getChildren().size() < model.getPlayers().get(id).getCardNumber()) {
+                bot_cards[id - 1].getChildren().add(new ImageView(new Image("/card_back.png")));
+                bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
+            }
+        }
+
+        updateDeckTop();
+    }
+
+    public void updateDeckTop(){
+        centerCenter.getChildren().clear();
+        centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
+    }
 }

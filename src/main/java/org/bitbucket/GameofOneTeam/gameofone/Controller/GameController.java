@@ -54,14 +54,29 @@ public class GameController {
                 }
 
                 gameModel.playNextTurn(inputCard,color);
-            }
-            else gameModel.playNextTurn(null,null);
 
-            Platform.runLater(new Runnable() {
-                public void run() {
-                    gameView.reload_cards();
-                }
-            });
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        gameView.reload_cards();
+                    }
+                });
+            }
+            else if(currentPlayer == 0){
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        gameView.reload_cards();
+                    }
+                });
+            }
+            else {
+                final int num = gameModel.getCurrentPlayer();
+                gameModel.playNextTurn(null,null);
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        gameView.updateBotMove(num);
+                    }
+                });
+            }
         }
 
         Platform.runLater(new Runnable() {
