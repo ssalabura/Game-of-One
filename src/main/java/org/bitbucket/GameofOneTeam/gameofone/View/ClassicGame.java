@@ -13,6 +13,7 @@ import javafx.scene.text.Font;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
 import static java.lang.Math.*;
+import static java.lang.Thread.sleep;
 
 
 public class ClassicGame extends Scene {
@@ -45,11 +46,6 @@ public class ClassicGame extends Scene {
 
     public synchronized void reload_cards() {
         root.getChildren().clear();
-        if(model.getWinner()!=null)
-        {
-            controllerThread.stop();
-            View.victoryScreen.show(model.getWinner());
-        }
         player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);
         centerCenter = new VBox();
@@ -214,12 +210,67 @@ public class ClassicGame extends Scene {
                 bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
             }
         }
+    }
 
-        updateDeckTop();
+    public void updateHumanMove(){
+
+        if(model.getPlayedCard()==null){
+            int i = player_cards.getChildren().size();
+            while (player_cards.getChildren().size() < model.getPlayers().get(0).getCardNumber()){
+                ImageView newCardView = new ImageView(model.getPlayers().get(0).getHand().get(i).getImage());
+                player_cards.getChildren().add(newCardView);
+                newCardView.setOnMouseClicked(getCardClickEvent(model.getPlayers().get(0).getHand().get(i)));
+                i++;
+            }
+
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {            controllerThread.stop();
+            View.victoryScreen.show(model.getWinner());
+                e.printStackTrace();
+            }
+        }
+
+        else{
+            try {
+                player_cards.getChildren().remove(((HumanPlayer) model.getPlayers().get(0)).cardInd);
+            }catch (IndexOutOfBoundsException e){
+                System.out.println(model.getPlayedCard());
+            }
+        }
     }
 
     public void updateDeckTop(){
         centerCenter.getChildren().clear();
         centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
+    }
+
+    public void trackUpdate(){
+        if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
+        else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
+    }
+
+    EventHandler<MouseEvent> getCardClickEvent(final Card c){
+        return new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent mouseEvent) {
+                lastClickTime = System.currentTimeMillis();
+                lastClickedCard = c;
+
+                synchronized (controllerThread) {
+                    controllerThread.notify();
+                }
+            }
+        };
+    }
+
+    public void endUpdate(){
+        synchronized (controllerThread){
+            controllerThread.notify();
+        }
+    }
+
+    public void endGame(){
+        View.victoryScreen.show(model.getWinner());
     }
 }

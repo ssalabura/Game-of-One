@@ -29,13 +29,11 @@ public class GameController {
                     long currentTime = System.currentTimeMillis();
                     do {
                         synchronized (Thread.currentThread()){
-                                Thread.currentThread().wait(100);
+                                Thread.currentThread().wait();
                         }
 
                         inputCard = gameView.getCardAfter(currentTime);
-                        boolean cont = false;
-                        for(Card z : available) cont = cont || z.equals(inputCard);
-                        if(!cont) inputCard = null;
+                        if(!available.contains(inputCard)) inputCard = null;
                     } while (inputCard == null);
                 }
 
@@ -57,16 +55,25 @@ public class GameController {
 
                 Platform.runLater(new Runnable() {
                     public void run() {
-                        gameView.reload_cards();
+                        gameView.updateHumanMove();
+                        gameView.updateDeckTop();
+                        gameView.trackUpdate();
+                        gameView.endUpdate();
                     }
                 });
+                beginUpdate();
             }
             else if(currentPlayer == 0){
+                gameModel.playNextTurn(null,null);
                 Platform.runLater(new Runnable() {
                     public void run() {
-                        gameView.reload_cards();
+                        gameView.updateHumanMove();
+                        gameView.updateDeckTop();
+                        gameView.trackUpdate();
+                        gameView.endUpdate();
                     }
                 });
+                beginUpdate();
             }
             else {
                 final int num = gameModel.getCurrentPlayer();
@@ -74,15 +81,29 @@ public class GameController {
                 Platform.runLater(new Runnable() {
                     public void run() {
                         gameView.updateBotMove(num);
+                        gameView.updateDeckTop();
+                        gameView.trackUpdate();
+                        gameView.endUpdate();
                     }
                 });
+                beginUpdate();
             }
         }
 
         Platform.runLater(new Runnable() {
             public void run() {
-                gameView.reload_cards();
+                gameView.endGame();
             }
         });
+    }
+
+    void beginUpdate(){
+        synchronized (Thread.currentThread()) {
+            try {
+                Thread.currentThread().wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
