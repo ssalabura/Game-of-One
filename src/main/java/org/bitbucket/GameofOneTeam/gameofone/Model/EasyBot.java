@@ -7,11 +7,11 @@ import static java.lang.Thread.sleep;
 
 public class EasyBot extends Player {
     public Card move(Card inputCard){
-        try {
+        /*try {
             sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         LinkedList<Card> available = getAvailable();
         if(available.isEmpty()) return null;

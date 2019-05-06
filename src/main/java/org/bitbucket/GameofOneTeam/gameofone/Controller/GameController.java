@@ -6,6 +6,8 @@ import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
 
 import java.util.LinkedList;
 
+import static java.lang.Thread.sleep;
+
 public class GameController {
     private final GameModel gameModel;
     private final ClassicGame gameView;
@@ -40,7 +42,7 @@ public class GameController {
                 if(inputCard != null && (inputCard.type == CardType.CHANGE_COLOR || inputCard.type == CardType.PLUS_FOUR )){
                     Platform.runLater(new Runnable() {
                         public void run() {
-                            gameView.chooseColor();
+                            gameView.updateChooseColor();
                         }
                     });
 
@@ -51,29 +53,51 @@ public class GameController {
                     color = gameView.getChosenColor();
                 }
 
+                //System.out.println(gameModel.getPlayers().get(0).getCardNumber() + " " + gameView.getHandSize());
+                //System.out.println(gameModel.getPlayedCard());
                 gameModel.playNextTurn(inputCard,color);
 
-                Platform.runLater(new Runnable() {
-                    public void run() {
-                        gameView.updateHumanMove();
-                        gameView.updateDeckTop();
-                        gameView.trackUpdate();
-                        gameView.endUpdate();
+                if(inputCard == null){
+                    while (gameView.getHandSize() < gameModel.getPlayers().get(0).getHand().size()){
+                        Platform.runLater(new Runnable() {
+                            public void run() {
+                                gameView.addCard(gameModel.getPlayers().get(0).getHand().get(gameView.getHandSize()));
+                                gameView.endUpdate();
+                            }
+                        });
+                        beginUpdate();
                     }
-                });
-                beginUpdate();
+
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            gameView.trackUpdate();
+                            gameView.endUpdate();
+                        }
+                    });
+                    beginUpdate();
+                }
+
+                else {
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            gameView.playCard(((HumanPlayer)gameModel.getPlayers().get(0)).cardInd);
+                            gameView.updateDeckTop();
+                            gameView.trackUpdate();
+                            gameView.endUpdate();
+                        }
+                    });
+
+                    beginUpdate();
+                }
             }
             else if(currentPlayer == 0){
                 gameModel.playNextTurn(null,null);
                 Platform.runLater(new Runnable() {
                     public void run() {
-                        gameView.updateHumanMove();
-                        gameView.updateDeckTop();
                         gameView.trackUpdate();
-                        gameView.endUpdate();
                     }
                 });
-                beginUpdate();
+                sleep(1000);
             }
             else {
                 final int num = gameModel.getCurrentPlayer();
@@ -88,6 +112,9 @@ public class GameController {
                 });
                 beginUpdate();
             }
+
+            //System.out.println(gameModel.getPlayers().get(0).getCardNumber() + " " + gameView.getHandSize());
+            //System.out.println(gameModel.getPlayedCard());
         }
 
         Platform.runLater(new Runnable() {
@@ -104,6 +131,12 @@ public class GameController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
