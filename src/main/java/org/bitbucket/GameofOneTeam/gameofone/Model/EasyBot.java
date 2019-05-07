@@ -6,15 +6,17 @@ import java.util.Random;
 import static java.lang.Thread.sleep;
 
 public class EasyBot extends Player {
+    Random r = new Random();
     public Card move(Card inputCard){
-        /*try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
 
         LinkedList<Card> available = getAvailable();
         if(available.isEmpty()) return null;
+
+        try {
+            sleep(r.nextInt(200*available.size()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Random R = new Random(System.currentTimeMillis());
         Card pickedCard = available.remove(R.nextInt(available.size()));
