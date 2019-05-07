@@ -16,11 +16,10 @@ public class HardBot extends Player {
             e.printStackTrace();
         }
 
-        LinkedList<Card> cards = getHand();
         Card pickedCard = null;
         int pickedCount = 0;
         int b=0,g=0,r=0,y=0;
-        for(Card c : cards) {
+        for(Card c : hand) {
             if(c.color==CardColor.BLUE) b++;
             else if(c.color==CardColor.GREEN) g++;
             else if(c.color==CardColor.RED) r++;
@@ -38,10 +37,9 @@ public class HardBot extends Player {
         return pickedCard;
     }
     public int changeColor(Integer inputColor) {
-        LinkedList<Card> cards = getHand();
         int b=0,g=0,r=0,y=0;
         int output = 0, outputCount = 0;
-        for(Card c : cards) {
+        for(Card c : hand) {
             if(c.color==CardColor.BLUE) { b++; if(b>outputCount) { output = 0; outputCount = b; } }
             else if(c.color==CardColor.GREEN) { g++; if(g>outputCount) { output = 1; outputCount = g; } }
             else if(c.color==CardColor.RED) { r++; if(r>outputCount) { output = 2; outputCount = r; } }
