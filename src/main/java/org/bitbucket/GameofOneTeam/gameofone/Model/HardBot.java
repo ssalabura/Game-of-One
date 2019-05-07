@@ -1,12 +1,10 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
 import java.util.LinkedList;
-import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
 public class HardBot extends Player {
-    Random r = new Random();
     public Card move(Card inputCard){
 
         LinkedList<Card> available = getAvailable();
@@ -40,6 +38,15 @@ public class HardBot extends Player {
         return pickedCard;
     }
     public int changeColor(Integer inputColor) {
-        return new Random().nextInt(4);
+        LinkedList<Card> cards = getHand();
+        int b=0,g=0,r=0,y=0;
+        int output = 0, outputCount = 0;
+        for(Card c : cards) {
+            if(c.color==CardColor.BLUE) { b++; if(b>outputCount) { output = 0; outputCount = b; } }
+            else if(c.color==CardColor.GREEN) { g++; if(g>outputCount) { output = 1; outputCount = g; } }
+            else if(c.color==CardColor.RED) { r++; if(r>outputCount) { output = 2; outputCount = r; } }
+            else if(c.color==CardColor.YELLOW) { y++; if(y>outputCount) { output = 3; outputCount = y; } }
+        }
+        return output;
     }
 }
