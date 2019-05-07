@@ -45,11 +45,6 @@ public class ClassicGame extends Scene {
 
     public synchronized void reload_cards() {
         root.getChildren().clear();
-        if(model.getWinner()!=null)
-        {
-            controllerThread.stop();
-            View.victoryScreen.show(model.getWinner());
-        }
         player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
         centerBox = new HBox(100);
         centerCenter = new VBox();
@@ -115,68 +110,7 @@ public class ClassicGame extends Scene {
         }
         */
 
-        if(choosingColor) {
-            Button blue = new Button("BLUE");
-            blue.setFont(Font.font("Ubuntu Mono",20));
-            blue.setStyle("-fx-background-color: #00c3e5");
-            blue.setMinSize(150,45);
-            blue.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent mouseEvent) {
-                    chosenColor = 0;
-                    choosingColor = false;
-                    synchronized (controllerThread){
-                        controllerThread.notifyAll();
-                    }
-                    reload_cards();
-                }
-            });
-            Button red = new Button("RED");
-            red.setFont(Font.font("Ubuntu Mono",20));
-            red.setStyle("-fx-background-color: #f56462");
-            red.setMinSize(150,45);
-            red.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent mouseEvent) {
-                    chosenColor = 2;
-                    choosingColor = false;
-                    synchronized (controllerThread){
-                        controllerThread.notifyAll();
-                    }
-                    reload_cards();
-                }
-            });
-            Button green = new Button("GREEN");
-            green.setFont(Font.font("Ubuntu Mono",20));
-            green.setStyle("-fx-background-color: #2fe29b");
-            green.setMinSize(150,45);
-            green.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent mouseEvent) {
-                    chosenColor = 1;
-                    choosingColor = false;
-                    synchronized (controllerThread){
-                        controllerThread.notifyAll();
-                    }
-                    reload_cards();
-                }
-            });
-            Button yellow = new Button("YELLOW");
-            yellow.setFont(Font.font("Ubuntu Mono",20));
-            yellow.setStyle("-fx-background-color: #f7e359");
-            yellow.setMinSize(150,45);
-            yellow.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent mouseEvent) {
-                    chosenColor = 3;
-                    choosingColor = false;
-                    synchronized (controllerThread){
-                        controllerThread.notifyAll();
-                    }
-                    reload_cards();
-                }
-            });
-            centerCenter.getChildren().addAll(blue,red,green,yellow);
-        }
-        else {
-            centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
-        }
+        centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
         centerBox.getChildren().addAll(bot_cards[0],centerCenter,bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
         topBox.getChildren().addAll(order, bot_cards[1], turnIndicator);
@@ -197,8 +131,119 @@ public class ClassicGame extends Scene {
         return chosenColor;
     }
 
-    public void chooseColor() {
-        choosingColor = true;
-        reload_cards();
+    public void updateBotMove(int id) {
+        if(model.getPlayedCard()!=null){
+            bot_cards[id-1].getChildren().remove(0);
+            bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
+        }
+
+        else {
+            while (bot_cards[id - 1].getChildren().size() < model.getPlayers().get(id).getCardNumber()) {
+                bot_cards[id - 1].getChildren().add(new ImageView(new Image("/card_back.png")));
+                bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
+            }
+        }
+    }
+
+    public void updateDeckTop(){
+        centerCenter.getChildren().clear();
+        centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
+    }
+
+    public void trackUpdate(){
+        if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
+        else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
+    }
+
+    EventHandler<MouseEvent> getCardClickEvent(final Card c){
+        return new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent mouseEvent) {
+                lastClickTime = System.currentTimeMillis();
+                lastClickedCard = c;
+
+                synchronized (controllerThread) {
+                    controllerThread.notify();
+                }
+            }
+        };
+    }
+
+    public void addCard(Card card){
+        ImageView newCardView = new ImageView(card.getImage());
+        newCardView.setOnMouseClicked(getCardClickEvent(card));
+        player_cards.getChildren().add(newCardView);
+    }
+
+    public void playCard(int ind){
+        player_cards.getChildren().remove(ind);
+    }
+
+    public void endUpdate(){
+        synchronized (controllerThread){
+            controllerThread.notify();
+        }
+    }
+
+    public void endGame(){
+        View.victoryScreen.show(model.getWinner());
+    }
+    public int getHandSize() { return player_cards.getChildren().size(); }
+
+    public void updateChooseColor(){
+            centerCenter.getChildren().clear();
+            Button blue = new Button("BLUE");
+            blue.setFont(Font.font("Ubuntu Mono",20));
+            blue.setStyle("-fx-background-color: #00c3e5");
+            blue.setMinSize(150,45);
+            blue.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    chosenColor = 0;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                }
+            });
+            Button red = new Button("RED");
+            red.setFont(Font.font("Ubuntu Mono",20));
+            red.setStyle("-fx-background-color: #f56462");
+            red.setMinSize(150,45);
+            red.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    chosenColor = 2;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                }
+            });
+            Button green = new Button("GREEN");
+            green.setFont(Font.font("Ubuntu Mono",20));
+            green.setStyle("-fx-background-color: #2fe29b");
+            green.setMinSize(150,45);
+            green.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    chosenColor = 1;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                }
+            });
+            Button yellow = new Button("YELLOW");
+            yellow.setFont(Font.font("Ubuntu Mono",20));
+            yellow.setStyle("-fx-background-color: #f7e359");
+            yellow.setMinSize(150,45);
+            yellow.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent mouseEvent) {
+                    chosenColor = 3;
+                    choosingColor = false;
+                    synchronized (controllerThread){
+                        controllerThread.notifyAll();
+                    }
+                }
+            });
+            centerCenter.getChildren().addAll(blue,red,green,yellow);
     }
 }
