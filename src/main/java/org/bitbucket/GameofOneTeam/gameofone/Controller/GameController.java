@@ -42,6 +42,7 @@ public class GameController {
                 if(inputCard != null && (inputCard.type == CardType.CHANGE_COLOR || inputCard.type == CardType.PLUS_FOUR )){
                     Platform.runLater(new Runnable() {
                         public void run() {
+                            gameView.beginUpdate();
                             gameView.updateChooseColor();
                         }
                     });
@@ -61,6 +62,7 @@ public class GameController {
                     while (gameView.getHandSize() < gameModel.getPlayers().get(0).getHand().size()){
                         Platform.runLater(new Runnable() {
                             public void run() {
+                                gameView.beginUpdate();
                                 gameView.addCard(gameModel.getPlayers().get(0).getHand().get(gameView.getHandSize()));
                                 gameView.endUpdate();
                             }
@@ -70,6 +72,7 @@ public class GameController {
 
                     Platform.runLater(new Runnable() {
                         public void run() {
+                            gameView.beginUpdate();
                             gameView.trackUpdate();
                             gameView.endUpdate();
                         }
@@ -80,6 +83,7 @@ public class GameController {
                 else {
                     Platform.runLater(new Runnable() {
                         public void run() {
+                            gameView.beginUpdate();
                             gameView.playCard(((HumanPlayer)gameModel.getPlayers().get(0)).cardInd);
                             gameView.updateDeckTop();
                             gameView.trackUpdate();
@@ -104,6 +108,7 @@ public class GameController {
                 gameModel.playNextTurn(null,null);
                 Platform.runLater(new Runnable() {
                     public void run() {
+                        gameView.beginUpdate();
                         gameView.updateBotMove(num);
                         gameView.updateDeckTop();
                         gameView.trackUpdate();
