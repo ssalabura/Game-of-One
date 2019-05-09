@@ -99,7 +99,6 @@ public class GameController {
                 sleep(1000);
             }
             else {
-                final int num = gameModel.getCurrentPlayer();
                 gameModel.playNextTurn(null,null);
 
                 if(gameModel.getPlayedCard() != null){
@@ -112,8 +111,6 @@ public class GameController {
                     beginUpdate();
 
                 } else {
-                    beginUpdate();
-
                     while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(currentPlayer).getHand().size()){
                         Platform.runLater(new Runnable() {
                             public void run() {
