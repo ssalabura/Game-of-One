@@ -86,7 +86,6 @@ public class GameController {
                         }
                     });
                     beginUpdate();
-
                 }
             }
             else if(currentPlayer == 0){
@@ -121,6 +120,15 @@ public class GameController {
                         });
                         beginUpdate();
                     }
+
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            gameView.beginUpdate();
+                            gameView.trackUpdate();
+                            gameView.endUpdate();
+                        }
+                    });
+                    beginUpdate();
                 }
             }
         }
