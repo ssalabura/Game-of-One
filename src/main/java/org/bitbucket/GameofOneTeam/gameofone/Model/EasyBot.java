@@ -16,6 +16,8 @@ public class EasyBot extends Player {
             e.printStackTrace();
         }
         Card pickedCard = available.remove(r.nextInt(available.size()));
+
+        cardInd = hand.indexOf(pickedCard);
         hand.remove(pickedCard);
         return pickedCard;
     }

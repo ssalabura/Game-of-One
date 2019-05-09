@@ -75,12 +75,6 @@ public class ClassicGameModel implements GameModel {
         else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
     }
 
-    public LinkedList<Integer> getCardNumber(){
-        LinkedList<Integer> L = new LinkedList<Integer>();
-        for(Player z : players){ L.addLast(z.hand.size());}
-        return L;
-    }
-
     public LinkedList<Player> getPlayers() { return players; }
     public Integer getCurrentPlayer(){ return currentPlayer; }
     public Integer getWinner(){ return winner; }

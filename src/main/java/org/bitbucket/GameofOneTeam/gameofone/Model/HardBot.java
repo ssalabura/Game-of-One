@@ -33,6 +33,7 @@ public class HardBot extends Player {
             else if(pickedCard==null) pickedCard = c;
         }
 
+        cardInd = hand.indexOf(pickedCard);
         hand.remove(pickedCard);
         return pickedCard;
     }

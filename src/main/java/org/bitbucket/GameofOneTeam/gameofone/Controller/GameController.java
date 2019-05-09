@@ -18,7 +18,7 @@ public class GameController {
 
     public void startGame() throws InterruptedException {
         while(gameModel.getWinner() == null){
-            Integer currentPlayer = gameModel.getCurrentPlayer();
+            final Integer currentPlayer = gameModel.getCurrentPlayer();
             Player player = gameModel.getPlayers().get(currentPlayer);
 
             if(currentPlayer == 0 && player instanceof HumanPlayer && !gameModel.getBlock()){
@@ -54,16 +54,14 @@ public class GameController {
                     color = gameView.getChosenColor();
                 }
 
-                //System.out.println(gameModel.getPlayers().get(0).getCardNumber() + " " + gameView.getHandSize());
-                //System.out.println(gameModel.getPlayedCard());
                 gameModel.playNextTurn(inputCard,color);
 
                 if(inputCard == null){
-                    while (gameView.getHandSize() < gameModel.getPlayers().get(0).getHand().size()){
+                    while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(0).getHand().size()){
                         Platform.runLater(new Runnable() {
                             public void run() {
                                 gameView.beginUpdate();
-                                gameView.addCard(gameModel.getPlayers().get(0).getHand().get(gameView.getHandSize()));
+                                gameView.addCard(currentPlayer ,gameModel.getPlayers().get(0).getHand().get(gameView.getHandSize(currentPlayer)));
                                 gameView.endUpdate();
                             }
                         });
@@ -84,7 +82,7 @@ public class GameController {
                     Platform.runLater(new Runnable() {
                         public void run() {
                             gameView.beginUpdate();
-                            gameView.playCard(((HumanPlayer)gameModel.getPlayers().get(0)).cardInd);
+                            gameView.playCard(0,gameModel.getPlayers().get(0).getCardInd());
                         }
                     });
                     beginUpdate();
@@ -103,20 +101,31 @@ public class GameController {
             else {
                 final int num = gameModel.getCurrentPlayer();
                 gameModel.playNextTurn(null,null);
-                Platform.runLater(new Runnable() {
-                    public void run() {
-                        gameView.beginUpdate();
-                        gameView.updateBotMove(num);
-                        gameView.updateDeckTop();
-                        gameView.trackUpdate();
-                        gameView.endUpdate();
-                    }
-                });
-                beginUpdate();
-            }
 
-            //System.out.println(gameModel.getPlayers().get(0).getCardNumber() + " " + gameView.getHandSize());
-            //System.out.println(gameModel.getPlayedCard());
+                if(gameModel.getPlayedCard() != null){
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            gameView.beginUpdate();
+                            gameView.playCard(currentPlayer,gameModel.getPlayers().get(currentPlayer).getCardInd());
+                        }
+                    });
+                    beginUpdate();
+
+                } else {
+                    beginUpdate();
+
+                    while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(currentPlayer).getHand().size()){
+                        Platform.runLater(new Runnable() {
+                            public void run() {
+                                gameView.beginUpdate();
+                                gameView.addCard(currentPlayer ,gameModel.getPlayers().get(currentPlayer).getHand().get(gameView.getHandSize(currentPlayer)));
+                                gameView.endUpdate();
+                            }
+                        });
+                        beginUpdate();
+                    }
+                }
+            }
         }
 
         Platform.runLater(new Runnable() {

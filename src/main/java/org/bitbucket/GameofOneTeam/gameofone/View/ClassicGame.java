@@ -172,20 +172,21 @@ public class ClassicGame extends Scene {
         };
     }
 
-    public void addCard(Card card){
-        ImageView newCardView = new ImageView(card.getImage());
-        newCardView.setOnMouseClicked(getCardClickEvent(card));
-        player_cards.getChildren().add(newCardView);
+    public void addCard(int id ,Card card){
+        if(id==0) {
+            ImageView newCardView = new ImageView(card.getImage());
+            newCardView.setOnMouseClicked(getCardClickEvent(card));
+            player_cards.getChildren().add(newCardView);
+        } else {
+            bot_cards[id-1].getChildren().add(new ImageView("/card_back.png"));
+            bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,bot_cards[id-1].getChildren().size()-1)));
+        }
     }
 
-    private Node z;
-    private double x;
-    private double y;
-
-    public void animate(){
+    public void animate(final Node z){
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
-        tt.setDuration(Duration.millis(500));
+        tt.setDuration(Duration.millis(750));
         tt.setToX(0);
         tt.setToY(-40);
         tt.setOnFinished(new EventHandler<ActionEvent>() {
@@ -199,17 +200,19 @@ public class ClassicGame extends Scene {
         tt.play();
     }
 
-    public void playCard(int ind){
-        z = player_cards.getChildren().get(ind);
+    public void playCard(int playerId, int ind){
+        Node z;
+        if(playerId==0) z = player_cards.getChildren().get(ind);
+        else z = bot_cards[playerId-1].getChildren().get(ind);
         Node zp = z.getParent();
-        x = z.getLayoutX() + zp.getLayoutX() + zp.getParent().getLayoutX();
-        y = z.getLayoutY() + zp.getLayoutY() + zp.getParent().getLayoutY();
+        double x = z.getLayoutX() + zp.getLayoutX() + zp.getParent().getLayoutX();
+        double y = z.getLayoutY() + zp.getLayoutY() + zp.getParent().getLayoutY();
 
         root.getChildren().add(z);
         z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2);
         z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2);
 
-        animate();
+        animate(z);
     }
 
     public void beginUpdate(){
@@ -226,7 +229,10 @@ public class ClassicGame extends Scene {
     public void endGame(){
         View.victoryScreen.show(model.getWinner());
     }
-    public int getHandSize() { return player_cards.getChildren().size(); }
+    public int getHandSize(int i) {
+        if(i>0) return bot_cards[i-1].getChildren().size();
+        return player_cards.getChildren().size();
+    }
 
     public void updateChooseColor(){
 
