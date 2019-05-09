@@ -10,6 +10,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Properties;
+
 public class Settings extends Scene {
     public static int difficulty = 0; //0 - easy, 1 - hard
     public static int cards = 7;
@@ -34,7 +38,7 @@ public class Settings extends Scene {
     private final static Button texturesMinecraft = new Button();
 
     private final static Button exit = new Button();
-    static {
+    static void load(){
         difficultyText.setFont(Font.font(View.btnFont,50));
         difficultyText.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
@@ -111,7 +115,7 @@ public class Settings extends Scene {
         texturesClassic.setFont(Font.font("Ubuntu Mono",50));
         texturesClassic.setBackground(new Background(new BackgroundImage(new Image("/classic/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         texturesClassic.setMinSize(100,100);
-        if(View.texture_pack=="classic") texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
+        if(View.texture_pack.equals("classic")) texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
         else texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesClassic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
@@ -126,7 +130,7 @@ public class Settings extends Scene {
         texturesMinecraft.setFont(Font.font("Minecraft",50));
         texturesMinecraft.setBackground(new Background(new BackgroundImage(new Image("/minecraft/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         texturesMinecraft.setMinSize(100,100);
-        if(View.texture_pack=="minecraft") texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
+        if(View.texture_pack.equals("minecraft")) texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
         else texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesMinecraft.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
@@ -144,6 +148,19 @@ public class Settings extends Scene {
         exit.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
+                Properties p = new Properties();
+                p.setProperty("difficulty",String.valueOf(difficulty));
+                p.setProperty("cards",String.valueOf(cards));
+                p.setProperty("texture_pack",View.texture_pack);
+                File f = new File("save.txt");
+                try {
+                    f.createNewFile();
+                    FileOutputStream fos = new FileOutputStream(f);
+                    p.store(fos,"");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 View.stage.setScene(View.mainMenu);
             }
         });
