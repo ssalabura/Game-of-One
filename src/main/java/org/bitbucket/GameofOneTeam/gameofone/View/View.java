@@ -12,7 +12,10 @@ public class View extends Application{
     public static ClassicGame classicGame;
     public static VictoryScreen victoryScreen;
     public static Settings settings;
-    public final static Image background = new Image("/mainmenu.jpg");
+    public static String texture_pack = "minecraft";
+    public final static Image logo = new Image("/" + texture_pack + "/logo.png");
+    public final static Image background = new Image("/" + texture_pack + "/mainmenu.png");
+    public final static Image game_background = new Image("/" + texture_pack + "/game.png");
 
     @Override
     public void start(Stage primaryStage) {

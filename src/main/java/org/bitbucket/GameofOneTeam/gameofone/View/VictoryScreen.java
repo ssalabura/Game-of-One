@@ -48,7 +48,7 @@ public class VictoryScreen extends Scene {
         vb.getChildren().addAll(title,winner,button);
         vb.setAlignment(Pos.CENTER);
         victoryRoot.getChildren().add(vb);
-        victoryRoot.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        victoryRoot.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         View.stage.setScene(this);
     }
 }
