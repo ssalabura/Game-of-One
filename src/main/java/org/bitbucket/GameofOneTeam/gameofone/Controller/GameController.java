@@ -85,13 +85,10 @@ public class GameController {
                         public void run() {
                             gameView.beginUpdate();
                             gameView.playCard(((HumanPlayer)gameModel.getPlayers().get(0)).cardInd);
-                            gameView.updateDeckTop();
-                            gameView.trackUpdate();
-                            gameView.endUpdate();
                         }
                     });
-
                     beginUpdate();
+
                 }
             }
             else if(currentPlayer == 0){
