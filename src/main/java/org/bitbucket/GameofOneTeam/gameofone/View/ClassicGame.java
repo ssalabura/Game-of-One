@@ -26,7 +26,7 @@ public class ClassicGame extends Scene {
     private static HBox[] bot_cards = new HBox[3];
     private static HBox centerBox;
     private static VBox centerCenter;
-    private static Button exit;
+    private static Button exit = new Button();
     private static VBox vb;
     private static ImageView order;
     private static ImageView turnIndicator;
@@ -52,7 +52,6 @@ public class ClassicGame extends Scene {
         centerBox = new HBox(100);
         centerCenter = new VBox();
         topBox = new HBox(100);
-        exit = new Button();
         vb = new VBox(40);
         order = new ImageView();
         turnIndicator = new ImageView();
@@ -91,7 +90,7 @@ public class ClassicGame extends Scene {
                 controllerThread.stop();
             }
         });
-        exit.setFont(Font.font("Ubuntu Mono",20));
+        exit.setFont(Font.font(View.btnFont,20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
         if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
@@ -121,7 +120,7 @@ public class ClassicGame extends Scene {
         vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
         root.getChildren().add(vb);
-        root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        root.setBackground(new Background(new BackgroundImage(View.game_background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         choosingColor = false;
     }
 
@@ -290,5 +289,10 @@ public class ClassicGame extends Scene {
             }
         });
         centerCenter.getChildren().addAll(blue,red,green,yellow);
+    }
+
+    static void reloadTextures() {
+        exit.setFont(Font.font(View.btnFont,20));
+        root.setBackground(new Background(new BackgroundImage(View.game_background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 }

@@ -3,6 +3,8 @@ package org.bitbucket.GameofOneTeam.gameofone.Model;
 import java.util.LinkedList;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
+import static org.bitbucket.GameofOneTeam.gameofone.View.Settings.cards;
+import static org.bitbucket.GameofOneTeam.gameofone.View.Settings.difficulty;
 
 public class ClassicGameModel implements GameModel {
     private LinkedList<Player> players = new LinkedList<Player>();
@@ -13,8 +15,6 @@ public class ClassicGameModel implements GameModel {
     private int currentPlayer = 0;
     private Integer winner = null;
     private Card playedCard;
-    public static int difficulty = 0; //0 - easy, 1 - hard
-    public static int cards = 7;
 
     private void notifyPlayers(Card card){
         for (Player z : players) { z.update(card);}
