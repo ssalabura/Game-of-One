@@ -185,7 +185,7 @@ public class ClassicGame extends Scene {
     public void animate(){
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
-        tt.setDuration(Duration.millis(1000));
+        tt.setDuration(Duration.millis(500));
         tt.setToX(0);
         tt.setToY(-40);
         tt.setOnFinished(new EventHandler<ActionEvent>() {
@@ -206,8 +206,8 @@ public class ClassicGame extends Scene {
         y = z.getLayoutY() + zp.getLayoutY() + zp.getParent().getLayoutY();
 
         root.getChildren().add(z);
-        z.setTranslateX(x-555);
-        z.setTranslateY(y-269);
+        z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2);
+        z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2);
 
         animate();
     }
