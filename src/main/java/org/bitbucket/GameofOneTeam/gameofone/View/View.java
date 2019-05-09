@@ -13,6 +13,7 @@ public class View extends Application{
     public static VictoryScreen victoryScreen;
     public static Settings settings;
     public static String texture_pack = "classic";
+    public static String btnFont = "Ubuntu Mono";
     public static Image logo = new Image("/" + texture_pack + "/logo.png");
     public static Image background = new Image("/" + texture_pack + "/mainmenu.png");
     public static Image game_background = new Image("/" + texture_pack + "/game.png");
@@ -42,6 +43,8 @@ public class View extends Application{
         logo = new Image("/" + texture_pack + "/logo.png");
         background = new Image("/" + texture_pack + "/mainmenu.png");
         game_background = new Image("/" + texture_pack + "/game.png");
+        if(texture_pack=="classic") btnFont = "Ubuntu Mono";
+        else if(texture_pack=="minecraft") btnFont = "LM Mono Caps 10";
         MainMenu.reloadTextures();
         ClassicGame.reloadTextures();
         Settings.reloadTextures();

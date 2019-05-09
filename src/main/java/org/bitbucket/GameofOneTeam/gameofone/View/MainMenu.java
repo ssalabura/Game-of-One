@@ -13,9 +13,9 @@ import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 
 class MainMenu extends Scene {
-    private final static Font btnStyle = Font.font("Ubuntu Mono",50);
     private final static StackPane root = new StackPane();
     private final static VBox vb = new VBox(50);
+    private static ImageView logo;
     private final static VBox buttons = new VBox(20);
     private final static Button newgameBtn = new Button();
     private final static Button settingsBtn = new Button();
@@ -23,7 +23,7 @@ class MainMenu extends Scene {
     static {
         newgameBtn.setText("Classic Game");
         newgameBtn.setMinSize(100,100);
-        newgameBtn.setFont(btnStyle);
+        newgameBtn.setFont(Font.font(View.btnFont,50));
         newgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
@@ -44,7 +44,7 @@ class MainMenu extends Scene {
 
         settingsBtn.setText("Settings");
         settingsBtn.setMinSize(100,100);
-        settingsBtn.setFont(btnStyle);
+        settingsBtn.setFont(Font.font(View.btnFont,50));
         settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 View.stage.setScene(View.settings);
@@ -53,7 +53,7 @@ class MainMenu extends Scene {
 
         exitgameBtn.setText("Exit Game");
         exitgameBtn.setMinSize(100,100);
-        exitgameBtn.setFont(btnStyle);
+        exitgameBtn.setFont(Font.font(View.btnFont,50));
         exitgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
@@ -61,9 +61,11 @@ class MainMenu extends Scene {
             }
         });
 
+        logo = new ImageView(View.logo);
+
         buttons.getChildren().addAll(newgameBtn,settingsBtn,exitgameBtn);
         buttons.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(new ImageView(View.logo),buttons);
+        vb.getChildren().addAll(logo,buttons);
         vb.setAlignment(Pos.CENTER);
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
@@ -73,8 +75,12 @@ class MainMenu extends Scene {
     }
 
     static void reloadTextures() {
+        logo = new ImageView(View.logo);
+        newgameBtn.setFont(Font.font(View.btnFont,50));
+        settingsBtn.setFont(Font.font(View.btnFont,50));
+        exitgameBtn.setFont(Font.font(View.btnFont,50));
         vb.getChildren().clear();
-        vb.getChildren().addAll(new ImageView(View.logo),buttons);
+        vb.getChildren().addAll(logo,buttons);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 }

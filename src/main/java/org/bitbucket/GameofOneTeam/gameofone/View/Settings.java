@@ -13,8 +13,7 @@ import javafx.scene.text.Text;
 public class Settings extends Scene {
     public static int difficulty = 0; //0 - easy, 1 - hard
     public static int cards = 7;
-    
-    private final static Font btnStyle = Font.font("Ubuntu Mono",50);
+
     private final static StackPane root = new StackPane();
     private final static VBox vb = new VBox(50);
 
@@ -36,13 +35,13 @@ public class Settings extends Scene {
 
     private final static Button exit = new Button();
     static {
-        difficultyText.setFont(Font.font("Open Sans",50));
+        difficultyText.setFont(Font.font(View.btnFont,50));
         difficultyText.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
                 "-fx-stroke-width: 2;");
         difficultyEasy.setText("Easy");
         difficultyEasy.setMinSize(100,100);
-        difficultyEasy.setFont(btnStyle);
+        difficultyEasy.setFont(Font.font(View.btnFont,50));
         if(difficulty==0) difficultyEasy.setStyle("-fx-background-color: #2fe29b");
         difficultyEasy.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
@@ -53,7 +52,7 @@ public class Settings extends Scene {
         });
         difficultyHard.setText("Hard");
         difficultyHard.setMinSize(100,100);
-        difficultyHard.setFont(btnStyle);
+        difficultyHard.setFont(Font.font(View.btnFont,50));
         if(difficulty==1) difficultyHard.setStyle("-fx-background-color: #2fe29b");
         difficultyHard.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
@@ -66,13 +65,13 @@ public class Settings extends Scene {
         difficultyBox.getChildren().addAll(difficultyText,difficultyEasy,difficultyHard);
         difficultyBox.setAlignment(Pos.CENTER);
 
-        cardsText.setFont(Font.font("Open Sans",50));
+        cardsText.setFont(Font.font(View.btnFont,50));
         cardsText.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
                 "-fx-stroke-width: 2;");
         cardsLess.setText("▼");
         cardsLess.setMinSize(50,50);
-        cardsLess.setFont(Font.font("Ubuntu Mono",25));
+        cardsLess.setFont(Font.font(View.btnFont,25));
         cardsLess.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 cards--;
@@ -83,14 +82,14 @@ public class Settings extends Scene {
         });
 
         cardsCount.setText(String.valueOf(cards));
-        cardsCount.setFont(Font.font("Open Sans",50));
+        cardsCount.setFont(Font.font(View.btnFont,50));
         cardsCount.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
                 "-fx-stroke-width: 2;");
 
         cardsMore.setText("▲");
         cardsMore.setMinSize(50,50);
-        cardsMore.setFont(Font.font("Ubuntu Mono",25));
+        cardsMore.setFont(Font.font(View.btnFont,25));
         cardsMore.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 cards++;
@@ -103,7 +102,7 @@ public class Settings extends Scene {
         cardsBox.getChildren().addAll(cardsText,cardsLess,cardsCount,cardsMore);
         cardsBox.setAlignment(Pos.CENTER);
 
-        texturesText.setFont(Font.font("Open Sans",50));
+        texturesText.setFont(Font.font(View.btnFont,50));
         texturesText.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
                 "-fx-stroke-width: 2;");
@@ -111,7 +110,7 @@ public class Settings extends Scene {
         texturesClassic.setText("Classic");
         texturesClassic.setFont(Font.font("Ubuntu Mono",50));
         texturesClassic.setBackground(new Background(new BackgroundImage(new Image("/classic/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-        texturesClassic.setMinSize(200,200);
+        texturesClassic.setMinSize(100,100);
         if(View.texture_pack=="classic") texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
         else texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesClassic.setOnAction(new EventHandler<ActionEvent>() {
@@ -124,9 +123,9 @@ public class Settings extends Scene {
         });
 
         texturesMinecraft.setText("Minecraft");
-        texturesMinecraft.setFont(Font.font("Ubuntu Mono",50));
+        texturesMinecraft.setFont(Font.font("LM Mono Caps 10",50));
         texturesMinecraft.setBackground(new Background(new BackgroundImage(new Image("/minecraft/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-        texturesMinecraft.setMinSize(200,200);
+        texturesMinecraft.setMinSize(100,100);
         if(View.texture_pack=="minecraft") texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
         else texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesMinecraft.setOnAction(new EventHandler<ActionEvent>() {
@@ -148,7 +147,7 @@ public class Settings extends Scene {
                 View.stage.setScene(View.mainMenu);
             }
         });
-        exit.setFont(Font.font("Ubuntu Mono",20));
+        exit.setFont(Font.font(View.btnFont,20));
         exit.setMaxSize(250,30);
 
         vb.getChildren().addAll(difficultyBox,cardsBox,texturesBox,exit);
@@ -162,6 +161,13 @@ public class Settings extends Scene {
     }
 
     static void reloadTextures() {
+        difficultyText.setFont(Font.font(View.btnFont,50));
+        difficultyEasy.setFont(Font.font(View.btnFont,50));
+        difficultyHard.setFont(Font.font(View.btnFont,50));
+        cardsText.setFont(Font.font(View.btnFont,50));
+        cardsCount.setFont(Font.font(View.btnFont,50));
+        texturesText.setFont(Font.font(View.btnFont,50));
+        exit.setFont(Font.font(View.btnFont,20));
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 }
