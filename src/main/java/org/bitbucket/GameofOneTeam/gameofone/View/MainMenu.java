@@ -71,4 +71,10 @@ class MainMenu extends Scene {
     MainMenu(int w, int h) {
         super(root, w, h);
     }
+
+    static void reloadTextures() {
+        vb.getChildren().clear();
+        vb.getChildren().addAll(new ImageView(View.logo),buttons);
+        root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
 }

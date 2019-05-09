@@ -11,19 +11,19 @@ import javafx.scene.text.Text;
 
 public class VictoryScreen extends Scene {
     private static Font btnStyle = Font.font("Ubuntu Mono",50);
-    private static StackPane victoryRoot = new StackPane();
+    private static StackPane root = new StackPane();
     private static VBox vb;
     private static VBox button;
     private static Button backToMenuButton = new Button();
     private static Text title = new Text("Game Finished!");
     private static Text winner = new Text();
     public VictoryScreen(int w, int h) {
-        super(victoryRoot, w, h);
+        super(root, w, h);
     }
     public void show(int winnerNum) {
         button = new VBox(20);
         vb  = new VBox(50);
-        victoryRoot.getChildren().clear();
+        root.getChildren().clear();
         title.setFont(Font.font("Open Sans",150));
         title.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
@@ -47,8 +47,12 @@ public class VictoryScreen extends Scene {
                 "-fx-stroke-width: 2;");
         vb.getChildren().addAll(title,winner,button);
         vb.setAlignment(Pos.CENTER);
-        victoryRoot.getChildren().add(vb);
-        victoryRoot.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        root.getChildren().add(vb);
+        root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         View.stage.setScene(this);
+    }
+
+    static void reloadTextures() {
+        root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 }

@@ -253,4 +253,8 @@ public class ClassicGame extends Scene {
             });
             centerCenter.getChildren().addAll(blue,red,green,yellow);
     }
+
+    static void reloadTextures() {
+        root.setBackground(new Background(new BackgroundImage(View.game_background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
 }

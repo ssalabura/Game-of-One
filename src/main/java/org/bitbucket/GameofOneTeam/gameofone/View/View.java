@@ -12,10 +12,10 @@ public class View extends Application{
     public static ClassicGame classicGame;
     public static VictoryScreen victoryScreen;
     public static Settings settings;
-    public static String texture_pack = "minecraft";
-    public final static Image logo = new Image("/" + texture_pack + "/logo.png");
-    public final static Image background = new Image("/" + texture_pack + "/mainmenu.png");
-    public final static Image game_background = new Image("/" + texture_pack + "/game.png");
+    public static String texture_pack = "classic";
+    public static Image logo = new Image("/" + texture_pack + "/logo.png");
+    public static Image background = new Image("/" + texture_pack + "/mainmenu.png");
+    public static Image game_background = new Image("/" + texture_pack + "/game.png");
 
     @Override
     public void start(Stage primaryStage) {
@@ -38,4 +38,13 @@ public class View extends Application{
         launch(args);
     }
 
+    static void reloadTextures() {
+        logo = new Image("/" + texture_pack + "/logo.png");
+        background = new Image("/" + texture_pack + "/mainmenu.png");
+        game_background = new Image("/" + texture_pack + "/game.png");
+        MainMenu.reloadTextures();
+        ClassicGame.reloadTextures();
+        Settings.reloadTextures();
+        VictoryScreen.reloadTextures();
+    }
 }
