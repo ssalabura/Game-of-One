@@ -13,7 +13,8 @@ public class ClassicGameModel implements GameModel {
     private int currentPlayer = 0;
     private Integer winner = null;
     private Card playedCard;
-    private int difficulty = 0; //0 - easy, 1 - hard
+    public static int difficulty = 0; //0 - easy, 1 - hard
+    public static int cards = 7;
 
     private void notifyPlayers(Card card){
         for (Player z : players) { z.update(card);}
@@ -28,7 +29,7 @@ public class ClassicGameModel implements GameModel {
             }
             else players.addLast(new HumanPlayer());
 
-            for(int j=1;j<=7;j++){ players.getLast().draw(deck.draw());}
+            for(int j=0;j<cards;j++){ players.getLast().draw(deck.draw());}
         }
 
         playedCard = deck.draw();

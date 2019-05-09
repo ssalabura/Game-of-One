@@ -11,6 +11,7 @@ public class View extends Application{
     public static MainMenu mainMenu;
     public static ClassicGame classicGame;
     public static VictoryScreen victoryScreen;
+    public static Settings settings;
     public final static Image background = new Image("/mainmenu.jpg");
 
     @Override
@@ -19,6 +20,7 @@ public class View extends Application{
         mainMenu = new MainMenu(1280,720);
         classicGame = new ClassicGame(1280,720);
         victoryScreen = new VictoryScreen(1280,720);
+        settings = new Settings(1280,720);
         primaryStage.setTitle("Game of One");
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {

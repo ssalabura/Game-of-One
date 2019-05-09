@@ -49,10 +49,14 @@ class MainMenu extends Scene {
             }
         });
 
-        settingsBtn.setText("Settings (WIP)");
+        settingsBtn.setText("Settings");
         settingsBtn.setMinSize(100,100);
         settingsBtn.setFont(btnStyle);
-        settingsBtn.setDisable(true);
+        settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                View.stage.setScene(View.settings);
+            }
+        });
 
         exitgameBtn.setText("Exit Game");
         exitgameBtn.setMinSize(100,100);
