@@ -36,7 +36,7 @@ public class VictoryScreen extends Scene {
         backToMenuButton.setAlignment(Pos.CENTER);
         if(winnerNum==0) winner = new Text("Congratulations, you win!");
         else winner = new Text("Player "+winnerNum+" wins! You lose!");
-        winner.setFont(Font.font("Open Sans",80));
+        winner.setFont(Font.font(View.btnFont,80));
         winner.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
                 "-fx-stroke-width: 2;");
@@ -49,6 +49,7 @@ public class VictoryScreen extends Scene {
 
     static void reloadTextures() {
         backToMenuButton.setFont(Font.font(View.btnFont,20));
+        winner.setFont(Font.font(View.btnFont,80));
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 }
