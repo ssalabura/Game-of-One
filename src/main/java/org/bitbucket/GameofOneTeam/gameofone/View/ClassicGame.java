@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.Node;
 import javafx.scene.text.Font;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
@@ -179,7 +180,12 @@ public class ClassicGame extends Scene {
         player_cards.getChildren().remove(ind);
     }
 
+    public void beginUpdate(){
+        for(Node z : player_cards.getChildren()) z.setDisable(true);
+    }
+
     public void endUpdate(){
+        for(Node z : player_cards.getChildren()) z.setDisable(false);
         synchronized (controllerThread){
             controllerThread.notify();
         }
@@ -191,6 +197,7 @@ public class ClassicGame extends Scene {
     public int getHandSize() { return player_cards.getChildren().size(); }
 
     public void updateChooseColor(){
+
             centerCenter.getChildren().clear();
             Button blue = new Button("BLUE");
             blue.setFont(Font.font("Ubuntu Mono",20));
