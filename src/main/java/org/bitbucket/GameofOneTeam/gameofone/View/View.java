@@ -3,6 +3,7 @@ package org.bitbucket.GameofOneTeam.gameofone.View;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -20,6 +21,8 @@ public class View extends Application{
 
     @Override
     public void start(Stage primaryStage) {
+        Font.loadFont(getClass().getResource("/minecraft/MinecraftFont.ttf").toExternalForm(),10);
+
         stage = primaryStage;
         mainMenu = new MainMenu(1280,720);
         classicGame = new ClassicGame(1280,720);
@@ -44,7 +47,7 @@ public class View extends Application{
         background = new Image("/" + texture_pack + "/mainmenu.png");
         game_background = new Image("/" + texture_pack + "/game.png");
         if(texture_pack=="classic") btnFont = "Ubuntu Mono";
-        else if(texture_pack=="minecraft") btnFont = "LM Mono Caps 10";
+        else if(texture_pack=="minecraft") btnFont = "Minecraft";
         MainMenu.reloadTextures();
         ClassicGame.reloadTextures();
         Settings.reloadTextures();

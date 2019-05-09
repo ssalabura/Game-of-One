@@ -123,7 +123,7 @@ public class Settings extends Scene {
         });
 
         texturesMinecraft.setText("Minecraft");
-        texturesMinecraft.setFont(Font.font("LM Mono Caps 10",50));
+        texturesMinecraft.setFont(Font.font("Minecraft",50));
         texturesMinecraft.setBackground(new Background(new BackgroundImage(new Image("/minecraft/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         texturesMinecraft.setMinSize(100,100);
         if(View.texture_pack=="minecraft") texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
