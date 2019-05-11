@@ -24,6 +24,7 @@ public class Settings extends Scene {
     private final static HBox difficultyBox = new HBox(50);
     private final static Text difficultyText = new Text("Bot difficulty:");
     private final static Button difficultyEasy = new Button();
+    private final static Button difficultyMedium = new Button();
     private final static Button difficultyHard = new Button();
 
     private final static HBox cardsBox = new HBox(50);
@@ -51,22 +52,38 @@ public class Settings extends Scene {
             public void handle(ActionEvent actionEvent) {
                 difficulty=0;
                 difficultyEasy.setStyle("-fx-background-color: #2fe29b");
+                difficultyMedium.setStyle("");
                 difficultyHard.setStyle("");
             }
         });
-        difficultyHard.setText("Hard");
-        difficultyHard.setMinSize(100,100);
-        difficultyHard.setFont(Font.font(View.btnFont,50));
-        if(difficulty==1) difficultyHard.setStyle("-fx-background-color: #2fe29b");
-        difficultyHard.setOnAction(new EventHandler<ActionEvent>() {
+
+        difficultyMedium.setText("Medium");
+        difficultyMedium.setMinSize(100,100);
+        difficultyMedium.setFont(Font.font(View.btnFont,50));
+        if(difficulty==1) difficultyMedium.setStyle("-fx-background-color: #2fe29b");
+        difficultyMedium.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 difficulty=1;
                 difficultyEasy.setStyle("");
+                difficultyMedium.setStyle("-fx-background-color: #2fe29b");
+                difficultyHard.setStyle("");
+            }
+        });
+
+        difficultyHard.setText("Hard");
+        difficultyHard.setMinSize(100,100);
+        difficultyHard.setFont(Font.font(View.btnFont,50));
+        if(difficulty==2) difficultyHard.setStyle("-fx-background-color: #2fe29b");
+        difficultyHard.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                difficulty=2;
+                difficultyEasy.setStyle("");
+                difficultyMedium.setStyle("");
                 difficultyHard.setStyle("-fx-background-color: #2fe29b");
             }
         });
 
-        difficultyBox.getChildren().addAll(difficultyText,difficultyEasy,difficultyHard);
+        difficultyBox.getChildren().addAll(difficultyText,difficultyEasy,difficultyMedium,difficultyHard);
         difficultyBox.setAlignment(Pos.CENTER);
 
         cardsText.setFont(Font.font(View.btnFont,50));
@@ -180,6 +197,7 @@ public class Settings extends Scene {
     static void reloadTextures() {
         difficultyText.setFont(Font.font(View.btnFont,50));
         difficultyEasy.setFont(Font.font(View.btnFont,50));
+        difficultyMedium.setFont(Font.font(View.btnFont, 50));
         difficultyHard.setFont(Font.font(View.btnFont,50));
         cardsText.setFont(Font.font(View.btnFont,50));
         cardsCount.setFont(Font.font(View.btnFont,50));
