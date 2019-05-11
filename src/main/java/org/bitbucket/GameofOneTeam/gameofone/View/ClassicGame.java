@@ -192,7 +192,6 @@ public class ClassicGame extends Scene {
             public void handle(ActionEvent event) {
                 updateDeckTop();
                 root.getChildren().remove(z);
-                trackUpdate();
                 endUpdate();
             }
         });

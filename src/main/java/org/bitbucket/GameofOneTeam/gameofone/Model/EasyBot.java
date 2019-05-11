@@ -8,13 +8,15 @@ public class EasyBot extends Player {
     public Card move(Card inputCard){
 
         LinkedList<Card> available = getAvailable();
-        if(available.isEmpty()) return null;
-
         try {
-            sleep(r.nextInt(200*available.size()));
+            sleep(r.nextInt(200*available.size() + 500) + 300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        if(available.isEmpty()) return null;
+
+
         Card pickedCard = available.remove(r.nextInt(available.size()));
 
         cardInd = hand.indexOf(pickedCard);
