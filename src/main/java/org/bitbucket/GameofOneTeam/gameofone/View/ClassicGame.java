@@ -56,6 +56,8 @@ public class ClassicGame extends Scene {
         order = new ImageView();
         turnIndicator = new ImageView();
         oneButton = new Button();
+
+        player_cards.setMinHeight(182);
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
@@ -77,6 +79,7 @@ public class ClassicGame extends Scene {
         for(int i=0;i<3;i++) {
             bot_cards[i] = new HBox(-130 + min(100,260/max(1,model.getPlayers().get(i+1).getCardNumber()-1)));
             bot_cards[i].setMinWidth(390);
+            bot_cards[i].setMinHeight(182);
             bot_cards[i].setAlignment(Pos.CENTER);
             for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
                 bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
@@ -185,9 +188,9 @@ public class ClassicGame extends Scene {
     public void animate(final Node z){
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
-        tt.setDuration(Duration.millis(750));
-        tt.setToX(0);
-        tt.setToY(-40);
+        tt.setDuration(Duration.millis(925));
+        tt.setToX(centerCenter.getLayoutX() - root.getWidth()/2 + centerCenter.getBoundsInLocal().getWidth()/2);
+        tt.setToY(centerBox.getLayoutY() - root.getHeight()/2 + centerBox.getBoundsInLocal().getHeight()/2);
         tt.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 updateDeckTop();
@@ -209,8 +212,9 @@ public class ClassicGame extends Scene {
         root.getChildren().add(z);
         z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2);
         z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2);
-
         animate(z);
+
+        if(playerId!=0) bot_cards[playerId-1].setSpacing(-130 + min(100,260/max(1,bot_cards[playerId-1].getChildren().size()-1)));
     }
 
     public void beginUpdate(){

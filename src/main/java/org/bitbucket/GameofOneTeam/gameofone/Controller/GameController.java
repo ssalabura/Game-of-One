@@ -89,20 +89,22 @@ public class GameController {
                             gameView.trackUpdate();
                         }
                     });
+                    sleep(200);
                 }
             }
             else if(currentPlayer == 0){
                 gameModel.playNextTurn(null,null);
+                sleep(750);
                 Platform.runLater(new Runnable() {
                     public void run() {
                         gameView.trackUpdate();
                     }
                 });
-                sleep(1000);
+                sleep(200);
             }
             else {
-                if(gameModel.getBlock()) sleep(750);
                 gameModel.playNextTurn(null,null);
+                sleep(850);
 
                 if(gameModel.getPlayedCard() != null){
                     Platform.runLater(new Runnable() {
@@ -119,6 +121,8 @@ public class GameController {
                         }
                     });
 
+                    sleep(200);
+
                 } else {
                     while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(currentPlayer).getHand().size()){
                         Platform.runLater(new Runnable() {
@@ -133,12 +137,10 @@ public class GameController {
 
                     Platform.runLater(new Runnable() {
                         public void run() {
-                            gameView.beginUpdate();
                             gameView.trackUpdate();
-                            gameView.endUpdate();
                         }
                     });
-                    beginUpdate();
+                    sleep(200);
                 }
             }
         }
@@ -160,7 +162,7 @@ public class GameController {
         }
 
         try {
-            sleep(500);
+            sleep(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
