@@ -46,6 +46,7 @@ public class View extends Application{
         Settings.load();
         reloadTextures();
 
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Game of One");
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {
