@@ -3,6 +3,8 @@ package org.bitbucket.GameofOneTeam.gameofone.Model;
 import java.util.LinkedList;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
+import static org.bitbucket.GameofOneTeam.gameofone.View.Settings.cards;
+import static org.bitbucket.GameofOneTeam.gameofone.View.Settings.difficulty;
 
 public class ClassicGameModel implements GameModel {
     private LinkedList<Player> players = new LinkedList<Player>();
@@ -19,12 +21,16 @@ public class ClassicGameModel implements GameModel {
      }
 
     public ClassicGameModel(boolean demo){
-
         for(int i=0;i<4;i++){
-            if(demo || i!=0) players.addLast(new EasyBot());
+            if(demo || i!=0) {
+                if(difficulty==0) players.addLast(new EasyBot());
+                else if(difficulty==1) players.addLast(new MediumBot());
+                else if(demo) players.addLast(new HardBot(null));
+                else players.addLast(new HardBot((HumanPlayer) players.get(0)));
+            }
             else players.addLast(new HumanPlayer());
 
-            for(int j=1;j<=7;j++){ players.getLast().draw(deck.draw());}
+            for(int j=0;j<cards;j++){ players.getLast().draw(deck.draw());}
         }
 
         playedCard = deck.draw();
@@ -70,15 +76,10 @@ public class ClassicGameModel implements GameModel {
         else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
     }
 
-    public LinkedList<Integer> getCardNumber(){
-        LinkedList<Integer> L = new LinkedList<Integer>();
-        for(Player z : players){ L.addLast(z.hand.size());}
-        return L;
-    }
-
     public LinkedList<Player> getPlayers() { return players; }
     public Integer getCurrentPlayer(){ return currentPlayer; }
     public Integer getWinner(){ return winner; }
-    public boolean getBlock(){return block;}
+    public boolean getBlock(){ return block;}
+    public Card getPlayedCard() { return playedCard; }
     public Card deckTop() { return deck.top(); }
 }
