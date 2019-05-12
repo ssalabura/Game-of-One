@@ -48,7 +48,7 @@ public class ClassicGame extends Scene {
 
     public synchronized void reload_cards() {
         root.getChildren().clear();
-        player_cards = new HBox(-30 - model.getPlayers().get(0).getHand().size() * 2);
+        player_cards = new HBox(-130 + min(100,1040/max(1,model.getPlayers().get(0).getHand().size()-1)));
         centerBox = new HBox(100);
         centerCenter = new VBox();
         topBox = new HBox(100);
