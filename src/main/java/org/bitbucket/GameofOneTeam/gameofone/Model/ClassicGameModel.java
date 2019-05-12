@@ -21,11 +21,12 @@ public class ClassicGameModel implements GameModel {
      }
 
     public ClassicGameModel(boolean demo){
-
         for(int i=0;i<4;i++){
             if(demo || i!=0) {
                 if(difficulty==0) players.addLast(new EasyBot());
-                else players.addLast(new HardBot());
+                else if(difficulty==1) players.addLast(new MediumBot());
+                else if(demo) players.addLast(new HardBot(null));
+                else players.addLast(new HardBot((HumanPlayer) players.get(0)));
             }
             else players.addLast(new HumanPlayer());
 
