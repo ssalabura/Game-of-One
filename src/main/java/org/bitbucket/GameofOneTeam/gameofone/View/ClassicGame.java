@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.Node;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
@@ -89,6 +90,13 @@ public class ClassicGame extends Scene {
         exit.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                if(View.texture_pack.equals("classic")) {
+                    View.gamePlayer.stop();
+                    try { Thread.sleep(1000); } catch (InterruptedException e) { }
+                    View.menuPlayer.play();
+                }
+                else try { Thread.sleep(1000); } catch (InterruptedException e) { }
                 View.stage.setScene(View.mainMenu);
                 controllerThread.stop();
             }
@@ -186,9 +194,10 @@ public class ClassicGame extends Scene {
     }
 
     public void animate(final Node z){
+        new AudioClip(getClass().getResource("/" + View.texture_pack + "/card.wav").toExternalForm()).play();
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
-        tt.setDuration(Duration.millis(925));
+        tt.setDuration(Duration.millis(500));
         tt.setToX(centerCenter.getLayoutX() - root.getWidth()/2 + centerCenter.getBoundsInLocal().getWidth()/2);
         tt.setToY(centerBox.getLayoutY() - root.getHeight()/2 + centerBox.getBoundsInLocal().getHeight()/2);
         tt.setOnFinished(new EventHandler<ActionEvent>() {

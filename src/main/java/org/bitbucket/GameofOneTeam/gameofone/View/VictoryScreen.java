@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -28,6 +29,11 @@ public class VictoryScreen extends Scene {
         backToMenuButton.setText("Return to Main Menu");
         backToMenuButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                if(View.texture_pack.equals("classic")) {
+                    View.menuPlayer.play();
+                    View.stage.setScene(View.mainMenu);
+                }
                 View.stage.setScene(View.mainMenu);
             }
         });
@@ -45,6 +51,9 @@ public class VictoryScreen extends Scene {
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         View.stage.setScene(this);
+        if(View.texture_pack.equals("classic")) View.gamePlayer.stop();
+        if(winnerNum==0) new AudioClip(getClass().getResource("/" + View.texture_pack + "/victory.wav").toExternalForm()).play();
+        else new AudioClip(getClass().getResource("/" + View.texture_pack + "/defeat.wav").toExternalForm()).play();
     }
 
     static void reloadTextures() {
