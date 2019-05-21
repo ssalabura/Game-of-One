@@ -42,6 +42,7 @@ public class View extends Application{
         try {
             FileInputStream fis = new FileInputStream(f);
             p.load(fis);
+            try { Settings.volume=Integer.valueOf(p.getProperty("volume")); } catch (Exception e) { Settings.volume=100; }
             try { Settings.difficulty=Integer.valueOf(p.getProperty("difficulty")); } catch(Exception e) { Settings.difficulty=0; }
             try { Settings.cards=Integer.valueOf(p.getProperty("cards")); } catch(Exception e) { Settings.cards=7; }
             try { texture_pack=p.getProperty("texture_pack"); } catch(Exception e) { texture_pack="classic"; }
@@ -60,6 +61,7 @@ public class View extends Application{
         primaryStage.show();
 
         menuPlayer = new MediaPlayer(new Media(View.class.getResource("/" + texture_pack + "/menu.wav").toExternalForm()));
+        menuPlayer.setVolume((float)Settings.volume/100);
         menuPlayer.play();
         menuPlayer.setOnEndOfMedia(new Runnable() {
             public void run() {

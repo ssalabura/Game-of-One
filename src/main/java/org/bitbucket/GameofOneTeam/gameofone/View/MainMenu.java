@@ -36,6 +36,7 @@ class MainMenu extends Scene {
                     View.menuPlayer.stop();
                     try { Thread.sleep(1000); } catch (InterruptedException e) { }
                     View.gamePlayer = new MediaPlayer(new Media(View.class.getResource("/" + View.texture_pack + "/game.wav").toExternalForm()));
+                    View.gamePlayer.setVolume((float)Settings.volume/100);
                     View.gamePlayer.play();
                     View.gamePlayer.setOnEndOfMedia(new Runnable() {
                         public void run() {

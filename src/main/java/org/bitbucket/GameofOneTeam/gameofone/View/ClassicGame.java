@@ -197,7 +197,7 @@ public class ClassicGame extends Scene {
         new AudioClip(getClass().getResource("/" + View.texture_pack + "/card.wav").toExternalForm()).play();
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
-        tt.setDuration(Duration.millis(925));
+        tt.setDuration(Duration.millis(500));
         tt.setToX(centerCenter.getLayoutX() - root.getWidth()/2 + centerCenter.getBoundsInLocal().getWidth()/2);
         tt.setToY(centerBox.getLayoutY() - root.getHeight()/2 + centerBox.getBoundsInLocal().getHeight()/2);
         tt.setOnFinished(new EventHandler<ActionEvent>() {
