@@ -77,6 +77,7 @@ class MainMenu extends Scene {
         exitgameBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                try { Thread.sleep(100); } catch(Exception e) { }
                 System.exit(0);
             }
         });
