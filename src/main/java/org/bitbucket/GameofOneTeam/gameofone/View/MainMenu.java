@@ -8,7 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Controller.GameController;
 import org.bitbucket.GameofOneTeam.gameofone.Model.ClassicGameModel;
 
@@ -27,6 +31,21 @@ class MainMenu extends Scene {
         newgameBtn.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                if(View.texture_pack.equals("classic")) {
+                    View.menuPlayer.stop();
+                    try { Thread.sleep(1000); } catch (InterruptedException e) { }
+                    View.gamePlayer = new MediaPlayer(new Media(View.class.getResource("/" + View.texture_pack + "/game.wav").toExternalForm()));
+                    View.gamePlayer.play();
+                    View.gamePlayer.setOnEndOfMedia(new Runnable() {
+                        public void run() {
+                            View.gamePlayer.seek(Duration.ZERO);
+                            View.gamePlayer.play();
+                        }
+                    });
+                }
+                else try { Thread.sleep(1000); } catch (InterruptedException e) { }
+
                 final ClassicGameModel model = new ClassicGameModel(false);
 
                 Thread T =  new Thread(new Task<Integer>() {
@@ -47,6 +66,7 @@ class MainMenu extends Scene {
         settingsBtn.setFont(Font.font(View.btnFont,50));
         settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 View.stage.setScene(View.settings);
             }
         });
@@ -55,8 +75,8 @@ class MainMenu extends Scene {
         exitgameBtn.setMinSize(100,100);
         exitgameBtn.setFont(Font.font(View.btnFont,50));
         exitgameBtn.setOnAction(new EventHandler<ActionEvent>() {
-
             public void handle(ActionEvent event) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 System.exit(0);
             }
         });
