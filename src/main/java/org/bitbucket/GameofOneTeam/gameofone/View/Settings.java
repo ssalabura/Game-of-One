@@ -79,7 +79,7 @@ public class Settings extends Scene {
         volumeHigher.setText("▲");
         volumeHigher.setMinSize(50,50);
         volumeHigher.setFont(Font.font(View.btnFont,25));
-        if(volume==100) cardsMore.setDisable(true);
+        if(volume==100) volumeHigher.setDisable(true);
         volumeHigher.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
