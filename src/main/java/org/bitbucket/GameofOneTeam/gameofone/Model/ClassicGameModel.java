@@ -33,7 +33,9 @@ public class ClassicGameModel implements GameModel {
             for(int j=0;j<cards;j++){ players.getLast().draw(deck.draw());}
         }
 
-        playedCard = deck.draw();
+        do {
+            playedCard = deck.draw();
+        } while (playedCard.type != NUMBER);
         deck.playCard(playedCard);
         notifyPlayers(playedCard);
     }
