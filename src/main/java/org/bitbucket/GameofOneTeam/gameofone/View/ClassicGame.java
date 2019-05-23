@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,6 +16,8 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
+
+import java.awt.*;
 
 import static java.lang.Math.*;
 
@@ -30,7 +33,7 @@ public class ClassicGame extends Scene {
     private static Button exit = new Button();
     private static VBox vb;
     private static ImageView order;
-    private static ImageView turnIndicator;
+    private static HBox alignTop;
     private static HBox topBox;
     private static Button oneButton;
     private static Card lastClickedCard;
@@ -55,25 +58,16 @@ public class ClassicGame extends Scene {
         topBox = new HBox(100);
         vb = new VBox(40);
         order = new ImageView();
-        turnIndicator = new ImageView();
+        alignTop = new HBox();
         oneButton = new Button();
 
         player_cards.setMinHeight(182);
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
-
+            i.setEffect(new Glow(0.5));
             if(!choosingColor) {
-                i.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent mouseEvent) {
-                        lastClickTime = System.currentTimeMillis();
-                        lastClickedCard = c;
-
-                        synchronized (controllerThread) {
-                            controllerThread.notify();
-                        }
-                    }
-                });
+                i.setOnMouseClicked(getCardClickEvent(c));
             }
             player_cards.getChildren().add(i);
         }
@@ -104,9 +98,9 @@ public class ClassicGame extends Scene {
         exit.setFont(Font.font(View.btnFont,20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
-        if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
-        else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
-        turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
+        if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
+        alignTop.setMinWidth(150);
 
         /*
         This functionality is currently not implemented
@@ -126,7 +120,7 @@ public class ClassicGame extends Scene {
         centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
         centerBox.getChildren().addAll(bot_cards[0],centerCenter,bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
-        topBox.getChildren().addAll(order, bot_cards[1], turnIndicator);
+        topBox.getChildren().addAll(order, bot_cards[1], alignTop);
         topBox.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
@@ -144,29 +138,31 @@ public class ClassicGame extends Scene {
         return chosenColor;
     }
 
-    public void updateBotMove(int id) {
-        if(model.getPlayedCard()!=null){
-            bot_cards[id-1].getChildren().remove(0);
-            bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
-        }
-
-        else {
-            while (bot_cards[id - 1].getChildren().size() < model.getPlayers().get(id).getCardNumber()) {
-                bot_cards[id - 1].getChildren().add(new ImageView(new Image("/card_back.png")));
-                bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,model.getPlayers().get(id).getCardNumber()-1)));
-            }
-        }
-    }
-
     public void updateDeckTop(){
         centerCenter.getChildren().clear();
         centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
     }
 
     public void trackUpdate(){
-        if(model.clockwise) order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
-        else order.setImage(new Image("/clockwise.png", 150, 150, false, false));
-        turnIndicator.setImage(new Image("/turn"+model.getCurrentPlayer()+".png", 150, 150, false, false));
+        if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
+        if(model.getCurrentPlayer()==0) {
+            for(Node c : player_cards.getChildren()) c.setEffect(new Glow(0.5));
+            for(int i=0;i<3;i++) {
+                for(Node c : bot_cards[i].getChildren()) c.setEffect(null);
+            }
+        }
+        else {
+            for(Node c : player_cards.getChildren()) c.setEffect(null);
+            for(int i=0;i<3;i++) {
+                if(model.getCurrentPlayer()==i+1) {
+                    for(Node c : bot_cards[i].getChildren()) c.setEffect(new Glow(0.5));
+                }
+                else {
+                    for(Node c : bot_cards[i].getChildren()) c.setEffect(null);
+                }
+            }
+        }
     }
 
     EventHandler<MouseEvent> getCardClickEvent(final Card c){
@@ -186,15 +182,20 @@ public class ClassicGame extends Scene {
         if(id==0) {
             ImageView newCardView = new ImageView(card.getImage());
             newCardView.setOnMouseClicked(getCardClickEvent(card));
+            newCardView.setEffect(new Glow(0.5));
             player_cards.getChildren().add(newCardView);
+            player_cards.setSpacing(-130 + min(100,1040/max(1,player_cards.getChildren().size()-1)));
         } else {
-            bot_cards[id-1].getChildren().add(new ImageView("/card_back.png"));
+            ImageView iv = new ImageView("/card_back.png");
+            iv.setEffect(new Glow(0.5));
+            bot_cards[id-1].getChildren().add(iv);
             bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,bot_cards[id-1].getChildren().size()-1)));
         }
     }
 
     public void animate(final Node z){
         new AudioClip(getClass().getResource("/" + View.texture_pack + "/card.wav").toExternalForm()).play();
+        z.setEffect(null);
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
         tt.setDuration(Duration.millis(500));
@@ -224,6 +225,7 @@ public class ClassicGame extends Scene {
         animate(z);
 
         if(playerId!=0) bot_cards[playerId-1].setSpacing(-130 + min(100,260/max(1,bot_cards[playerId-1].getChildren().size()-1)));
+        else player_cards.setSpacing(-130 + min(100,1040/max(1,model.getPlayers().get(0).getHand().size()-1)));
     }
 
     public void beginUpdate(){
