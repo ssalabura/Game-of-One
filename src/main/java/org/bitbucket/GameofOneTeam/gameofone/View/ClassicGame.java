@@ -6,6 +6,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.Node;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
@@ -65,7 +68,9 @@ public class ClassicGame extends Scene {
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
-            i.setEffect(new Glow(0.5));
+            Effect e = new Glow(0.5);
+            ((Glow) e).setInput(new DropShadow());
+            i.setEffect(e);
             if(!choosingColor) {
                 i.setOnMouseClicked(getCardClickEvent(c));
             }
@@ -77,7 +82,9 @@ public class ClassicGame extends Scene {
             bot_cards[i].setMinHeight(182);
             bot_cards[i].setAlignment(Pos.CENTER);
             for(int j=0;j<model.getPlayers().get(i+1).getCardNumber();j++) {
-                bot_cards[i].getChildren().add(new ImageView(new Image("/card_back.png")));
+                ImageView iv = new ImageView(new Image("/card_back.png"));
+                iv.setEffect(new DropShadow());
+                bot_cards[i].getChildren().add(iv);
             }
         }
         exit.setText("Return to Main Menu");
@@ -147,19 +154,27 @@ public class ClassicGame extends Scene {
         if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         if(model.getCurrentPlayer()==0) {
-            for(Node c : player_cards.getChildren()) c.setEffect(new Glow(0.5));
+            for(Node c : player_cards.getChildren()) {
+                Effect e = new Glow(0.5);
+                ((Glow) e).setInput(new DropShadow());
+                c.setEffect(e);
+            }
             for(int i=0;i<3;i++) {
-                for(Node c : bot_cards[i].getChildren()) c.setEffect(null);
+                for(Node c : bot_cards[i].getChildren()) c.setEffect(new DropShadow());
             }
         }
         else {
-            for(Node c : player_cards.getChildren()) c.setEffect(null);
+            for(Node c : player_cards.getChildren()) c.setEffect(new DropShadow());
             for(int i=0;i<3;i++) {
                 if(model.getCurrentPlayer()==i+1) {
-                    for(Node c : bot_cards[i].getChildren()) c.setEffect(new Glow(0.5));
+                    for(Node c : bot_cards[i].getChildren()) {
+                        Effect e = new Glow(0.5);
+                        ((Glow) e).setInput(new DropShadow());
+                        c.setEffect(e);
+                    }
                 }
                 else {
-                    for(Node c : bot_cards[i].getChildren()) c.setEffect(null);
+                    for(Node c : bot_cards[i].getChildren()) c.setEffect(new DropShadow());
                 }
             }
         }
@@ -182,12 +197,16 @@ public class ClassicGame extends Scene {
         if(id==0) {
             ImageView newCardView = new ImageView(card.getImage());
             newCardView.setOnMouseClicked(getCardClickEvent(card));
-            newCardView.setEffect(new Glow(0.5));
+            Effect e = new Glow(0.5);
+            ((Glow) e).setInput(new DropShadow());
+            newCardView.setEffect(e);
             player_cards.getChildren().add(newCardView);
             player_cards.setSpacing(-130 + min(100,1040/max(1,player_cards.getChildren().size()-1)));
         } else {
             ImageView iv = new ImageView("/card_back.png");
-            iv.setEffect(new Glow(0.5));
+            Effect e = new Glow(0.5);
+            ((Glow) e).setInput(new DropShadow());
+            iv.setEffect(e);
             bot_cards[id-1].getChildren().add(iv);
             bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,bot_cards[id-1].getChildren().size()-1)));
         }
@@ -195,7 +214,7 @@ public class ClassicGame extends Scene {
 
     public void animate(final Node z){
         new AudioClip(getClass().getResource("/" + View.texture_pack + "/card.wav").toExternalForm()).play();
-        z.setEffect(null);
+        z.setEffect(new DropShadow());
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
         tt.setDuration(Duration.millis(500));
