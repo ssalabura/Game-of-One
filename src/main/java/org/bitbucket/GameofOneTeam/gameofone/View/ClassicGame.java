@@ -218,8 +218,8 @@ public class ClassicGame extends Scene {
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
         tt.setDuration(Duration.millis(500));
-        tt.setToX(centerCenter.getLayoutX() - root.getWidth()/2 + centerCenter.getBoundsInLocal().getWidth()/2);
-        tt.setToY(centerBox.getLayoutY() - root.getHeight()/2 + centerBox.getBoundsInLocal().getHeight()/2);
+        tt.setToX(centerCenter.getLayoutX() - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2 - ((DropShadow)z.getEffect()).getRadius());
+        tt.setToY(centerBox.getLayoutY() - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2 - ((DropShadow)z.getEffect()).getRadius());
         tt.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 updateDeckTop();
@@ -239,8 +239,8 @@ public class ClassicGame extends Scene {
         double y = z.getLayoutY() + zp.getLayoutY() + zp.getParent().getLayoutY();
 
         root.getChildren().add(z);
-        z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2);
-        z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2);
+        z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2 - 10); // 10 = shadow radius
+        z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2 - 10);
         animate(z);
 
         if(playerId!=0) bot_cards[playerId-1].setSpacing(-130 + min(100,260/max(1,bot_cards[playerId-1].getChildren().size()-1)));
