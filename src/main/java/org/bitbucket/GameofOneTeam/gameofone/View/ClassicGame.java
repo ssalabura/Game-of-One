@@ -18,6 +18,8 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 
+import java.util.concurrent.CountDownLatch;
+
 import static java.lang.Math.*;
 
 
@@ -39,6 +41,7 @@ public class ClassicGame extends Scene {
     private static long lastClickTime;
     private static boolean choosingColor;
     private static Integer chosenColor;
+    private static CountDownLatch controllerLatch;
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
@@ -249,15 +252,14 @@ public class ClassicGame extends Scene {
         else player_cards.setSpacing(-130 + min(100,1040/max(1,model.getPlayers().get(0).getHand().size()-1)));
     }
 
-    public void beginUpdate(){
+    public void beginUpdate(CountDownLatch latch){
+        controllerLatch = latch;
         for(Node z : player_cards.getChildren()) z.setDisable(true);
     }
 
     public void endUpdate(){
         for(Node z : player_cards.getChildren()) z.setDisable(false);
-        synchronized (controllerThread){
-            controllerThread.notify();
-        }
+        controllerLatch.countDown();
     }
 
     public void endGame(){
@@ -279,9 +281,7 @@ public class ClassicGame extends Scene {
             public void handle(MouseEvent mouseEvent) {
                 chosenColor = 0;
                 choosingColor = false;
-                synchronized (controllerThread){
-                    controllerThread.notifyAll();
-                }
+                controllerLatch.countDown();
             }
         });
         Button red = new Button("RED");
@@ -292,9 +292,7 @@ public class ClassicGame extends Scene {
             public void handle(MouseEvent mouseEvent) {
                 chosenColor = 2;
                 choosingColor = false;
-                synchronized (controllerThread){
-                    controllerThread.notifyAll();
-                }
+                controllerLatch.countDown();
             }
         });
         Button green = new Button("GREEN");
@@ -305,9 +303,7 @@ public class ClassicGame extends Scene {
             public void handle(MouseEvent mouseEvent) {
                 chosenColor = 1;
                 choosingColor = false;
-                synchronized (controllerThread){
-                    controllerThread.notifyAll();
-                }
+                controllerLatch.countDown();
             }
         });
         Button yellow = new Button("YELLOW");
@@ -318,9 +314,7 @@ public class ClassicGame extends Scene {
             public void handle(MouseEvent mouseEvent) {
                 chosenColor = 3;
                 choosingColor = false;
-                synchronized (controllerThread){
-                    controllerThread.notifyAll();
-                }
+                controllerLatch.countDown();
             }
         });
         centerCenter.getChildren().addAll(blue,red,green,yellow);

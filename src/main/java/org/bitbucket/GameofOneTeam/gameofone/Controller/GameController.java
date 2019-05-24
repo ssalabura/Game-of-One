@@ -5,12 +5,14 @@ import org.bitbucket.GameofOneTeam.gameofone.Model.*;
 import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
 
 import java.util.LinkedList;
+import java.util.concurrent.CountDownLatch;
 
 import static java.lang.Thread.sleep;
 
 public class GameController {
     private final GameModel gameModel;
     private final ClassicGame gameView;
+    private CountDownLatch latch;
     public GameController(GameModel gameModel, ClassicGame gameView){
         this.gameModel = gameModel;
         this.gameView = gameView;
@@ -40,16 +42,14 @@ public class GameController {
                 }
 
                 if(inputCard != null && (inputCard.type == CardType.CHANGE_COLOR || inputCard.type == CardType.PLUS_FOUR )){
+                    latch = new CountDownLatch(1);
                     Platform.runLater(new Runnable() {
                         public void run() {
-                            gameView.beginUpdate();
+                            gameView.beginUpdate(latch);
                             gameView.updateChooseColor();
                         }
                     });
-
-                    synchronized (Thread.currentThread()) {
-                        Thread.currentThread().wait();
-                    }
+                    latch.await();
 
                     color = gameView.getChosenColor();
                 }
@@ -58,14 +58,16 @@ public class GameController {
 
                 if(inputCard == null){
                     while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(0).getHand().size()){
+                        latch = new CountDownLatch(1);
                         Platform.runLater(new Runnable() {
                             public void run() {
-                                gameView.beginUpdate();
+                                gameView.beginUpdate(latch);
                                 gameView.addCard(currentPlayer ,gameModel.getPlayers().get(0).getHand().get(gameView.getHandSize(currentPlayer)));
                                 gameView.endUpdate();
                             }
                         });
-                        beginUpdate();
+                        latch.await();
+                        sleep(600);
                     }
 
                     Platform.runLater(new Runnable() {
@@ -76,13 +78,15 @@ public class GameController {
                 }
 
                 else {
+                    latch = new CountDownLatch(1);
                     Platform.runLater(new Runnable() {
                         public void run() {
-                            gameView.beginUpdate();
+                            gameView.beginUpdate(latch);
                             gameView.playCard(0,gameModel.getPlayers().get(0).getCardInd());
                         }
                     });
-                    beginUpdate();
+                    latch.await();
+                    sleep(600);
 
                     Platform.runLater(new Runnable() {
                         public void run() {
@@ -107,13 +111,16 @@ public class GameController {
                 sleep(750);
 
                 if(gameModel.getPlayedCard() != null){
+
+                    latch = new CountDownLatch(1);
                     Platform.runLater(new Runnable() {
                         public void run() {
-                            gameView.beginUpdate();
+                            gameView.beginUpdate(latch);
                             gameView.playCard(currentPlayer,gameModel.getPlayers().get(currentPlayer).getCardInd());
                         }
                     });
-                    beginUpdate();
+                    latch.await();
+                    sleep(600);
 
                     Platform.runLater(new Runnable() {
                         public void run() {
@@ -123,14 +130,18 @@ public class GameController {
 
                 } else {
                     while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(currentPlayer).getHand().size()){
+                        final CountDownLatch latch = new CountDownLatch(1);
+
                         Platform.runLater(new Runnable() {
                             public void run() {
-                                gameView.beginUpdate();
+                                gameView.beginUpdate(latch);
                                 gameView.addCard(currentPlayer ,gameModel.getPlayers().get(currentPlayer).getHand().get(gameView.getHandSize(currentPlayer)));
                                 gameView.endUpdate();
+
                             }
                         });
-                        beginUpdate();
+                        latch.await();
+                        sleep(600);
                     }
 
                     Platform.runLater(new Runnable() {
@@ -148,21 +159,5 @@ public class GameController {
                 gameView.endGame();
             }
         });
-    }
-
-    void beginUpdate(){
-        synchronized (Thread.currentThread()) {
-            try {
-                Thread.currentThread().wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            sleep(600);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
