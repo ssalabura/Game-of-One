@@ -64,12 +64,14 @@ public class ClassicGame extends Scene {
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
-            Glow e = new Glow(0.5);
-            e.setInput(new DropShadow());
-            i.setEffect(e);
-            if(!choosingColor) {
-                i.setOnMouseClicked(getCardClickEvent(c));
-            }
+
+            if(model.getPlayers().get(0).getAvailable().contains(c)) {
+                Glow e = new Glow(0.5);
+                e.setInput(new DropShadow());
+                i.setEffect(e);
+            } else i.setEffect(new DropShadow());
+
+            i.setOnMouseClicked(getCardClickEvent(c));
             player_cards.getChildren().add(i);
         }
         for(int i=0;i<3;i++) {
@@ -150,10 +152,16 @@ public class ClassicGame extends Scene {
         if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         if(model.getCurrentPlayer()==0) {
+            int j = 0;
             for(Node c : player_cards.getChildren()) {
-                Glow e = new Glow(0.5);
-                e.setInput(new DropShadow());
-                c.setEffect(e);
+                if(model.getPlayers().get(0).getAvailable().contains(model.getPlayers().get(0).getHand().get(j))) {
+                    Glow e = new Glow(0.5);
+                    e.setInput(new DropShadow());
+                    c.setEffect(e);
+                }
+                else c.setEffect(new DropShadow());
+
+                j++;
             }
             for(int i=0;i<3;i++) {
                 for(Node c : bot_cards[i].getChildren()) c.setEffect(new DropShadow());
@@ -193,9 +201,7 @@ public class ClassicGame extends Scene {
         if(id==0) {
             ImageView newCardView = new ImageView(card.getImage());
             newCardView.setOnMouseClicked(getCardClickEvent(card));
-            Glow e = new Glow(0.5);
-            e.setInput(new DropShadow());
-            newCardView.setEffect(e);
+            newCardView.setEffect(new DropShadow());
             player_cards.getChildren().add(newCardView);
             player_cards.setSpacing(-130 + min(100,1040/max(1,player_cards.getChildren().size()-1)));
         } else {
