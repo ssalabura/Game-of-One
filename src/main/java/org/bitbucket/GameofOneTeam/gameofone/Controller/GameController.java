@@ -89,8 +89,8 @@ public class GameController {
                             gameView.trackUpdate();
                         }
                     });
-                    sleep(200);
                 }
+                sleep(200);
             }
             else if(currentPlayer == 0){
                 gameModel.playNextTurn(null,null);
@@ -104,7 +104,7 @@ public class GameController {
             }
             else {
                 gameModel.playNextTurn(null,null);
-                sleep(850);
+                sleep(750);
 
                 if(gameModel.getPlayedCard() != null){
                     Platform.runLater(new Runnable() {
@@ -120,8 +120,6 @@ public class GameController {
                             gameView.trackUpdate();
                         }
                     });
-
-                    sleep(200);
 
                 } else {
                     while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(currentPlayer).getHand().size()){
@@ -140,8 +138,8 @@ public class GameController {
                             gameView.trackUpdate();
                         }
                     });
-                    sleep(200);
                 }
+                sleep(200);
             }
         }
 

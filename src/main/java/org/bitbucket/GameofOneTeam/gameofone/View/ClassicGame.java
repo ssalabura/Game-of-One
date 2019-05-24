@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,12 +14,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.Node;
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import org.bitbucket.GameofOneTeam.gameofone.Model.*;
-
-import java.awt.*;
 
 import static java.lang.Math.*;
 
@@ -68,8 +64,8 @@ public class ClassicGame extends Scene {
         for(final Card c : model.getPlayers().get(0).getHand())
         {
             ImageView i = new ImageView(c.getImage());
-            Effect e = new Glow(0.5);
-            ((Glow) e).setInput(new DropShadow());
+            Glow e = new Glow(0.5);
+            e.setInput(new DropShadow());
             i.setEffect(e);
             if(!choosingColor) {
                 i.setOnMouseClicked(getCardClickEvent(c));
@@ -155,8 +151,8 @@ public class ClassicGame extends Scene {
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         if(model.getCurrentPlayer()==0) {
             for(Node c : player_cards.getChildren()) {
-                Effect e = new Glow(0.5);
-                ((Glow) e).setInput(new DropShadow());
+                Glow e = new Glow(0.5);
+                e.setInput(new DropShadow());
                 c.setEffect(e);
             }
             for(int i=0;i<3;i++) {
@@ -168,8 +164,8 @@ public class ClassicGame extends Scene {
             for(int i=0;i<3;i++) {
                 if(model.getCurrentPlayer()==i+1) {
                     for(Node c : bot_cards[i].getChildren()) {
-                        Effect e = new Glow(0.5);
-                        ((Glow) e).setInput(new DropShadow());
+                        Glow e = new Glow(0.5);
+                        e.setInput(new DropShadow());
                         c.setEffect(e);
                     }
                 }
@@ -197,15 +193,15 @@ public class ClassicGame extends Scene {
         if(id==0) {
             ImageView newCardView = new ImageView(card.getImage());
             newCardView.setOnMouseClicked(getCardClickEvent(card));
-            Effect e = new Glow(0.5);
-            ((Glow) e).setInput(new DropShadow());
+            Glow e = new Glow(0.5);
+            e.setInput(new DropShadow());
             newCardView.setEffect(e);
             player_cards.getChildren().add(newCardView);
             player_cards.setSpacing(-130 + min(100,1040/max(1,player_cards.getChildren().size()-1)));
         } else {
             ImageView iv = new ImageView("/card_back.png");
-            Effect e = new Glow(0.5);
-            ((Glow) e).setInput(new DropShadow());
+            Glow e = new Glow(0.5);
+            e.setInput(new DropShadow());
             iv.setEffect(e);
             bot_cards[id-1].getChildren().add(iv);
             bot_cards[id-1].setSpacing(-130 + min(100,260/max(1,bot_cards[id-1].getChildren().size()-1)));
