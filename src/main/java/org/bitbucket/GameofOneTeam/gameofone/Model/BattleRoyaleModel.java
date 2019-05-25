@@ -1,5 +1,9 @@
 package org.bitbucket.GameofOneTeam.gameofone.Model;
 
+import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
+import org.bitbucket.GameofOneTeam.gameofone.View.ClassicGame;
+
 import java.util.LinkedList;
 
 import static org.bitbucket.GameofOneTeam.gameofone.Model.CardType.*;
@@ -15,6 +19,7 @@ public class BattleRoyaleModel implements GameModel{
     private int currentPlayer = 0;
     private Integer winner = null;
     private Card playedCard;
+    private int eliminatedCount = 0;
 
     private void notifyPlayers(Card card){
         for (Player z : players) { z.update(card);}
@@ -39,12 +44,13 @@ public class BattleRoyaleModel implements GameModel{
         deck.playCard(playedCard);
         notifyPlayers(playedCard);
     }
+
     public void playNextTurn(Card inputCard, Integer color) {
         if (block) playedCard = null;
         else playedCard = players.get(currentPlayer).move(inputCard);
         notifyPlayers(playedCard);
 
-        if (block) block = false;
+        if(block) block = false;
         else {
             if (playedCard == null) {
                 if (cardsToAdd == 0) players.get(currentPlayer).draw(deck.draw());
@@ -66,15 +72,31 @@ public class BattleRoyaleModel implements GameModel{
                     playedCard.updateImage();
                 }
             }
-
-            if (players.get(currentPlayer).getCardNumber() == 0) {
-                winner = currentPlayer;
+        }
+        players.get(currentPlayer).draw(deck.draw());
+        //Eliminate player if he has more than 10 cards
+        if (players.get(currentPlayer).getCardNumber() >= 10) {
+            if(currentPlayer == 0) {
+                winner = 2;
                 return;
             }
+            players.get(currentPlayer).eliminated = true;
+            eliminatedCount++;
+            players.get(currentPlayer).die();
         }
 
-        if (clockwise) currentPlayer = (currentPlayer + 1) % players.size();
-        else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
+        //Check if there's only 1 player left. If yes end game
+        if(eliminatedCount == players.size()-1)
+        {
+            winner = 0;
+            return;
+        }
+        //Change current player to the next one
+        do
+        {
+            if (clockwise) currentPlayer = (currentPlayer + 1) % players.size();
+            else currentPlayer = (currentPlayer - 1 + players.size()) % players.size();
+        }while(players.get(currentPlayer).eliminated == true);
     }
 
     public LinkedList<Player> getPlayers() { return players; }

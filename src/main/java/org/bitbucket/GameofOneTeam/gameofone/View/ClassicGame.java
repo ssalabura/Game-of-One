@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -24,11 +25,11 @@ import static java.lang.Math.*;
 
 
 public class ClassicGame extends Scene {
-    private static ClassicGameModel model;
+    private static GameModel model;
     private static Thread controllerThread;
     private static StackPane root = new StackPane();
     private static HBox player_cards;
-    private static HBox[] bot_cards = new HBox[3];
+    public static HBox[] bot_cards = new HBox[3];
     private static HBox centerBox;
     private static VBox centerCenter;
     private static Button exit = new Button();
@@ -42,11 +43,12 @@ public class ClassicGame extends Scene {
     private static boolean choosingColor;
     private static Integer chosenColor;
     private static CountDownLatch controllerLatch;
+    private ColorAdjust colorAdjust = new ColorAdjust(0, 1, 0, 0);
     ClassicGame(int w, int h) {
         super(root, w, h);
     }
 
-    public void newGame(ClassicGameModel gameModel, Thread cT) {
+    public void newGame(GameModel gameModel, Thread cT) {
         model = gameModel;
         controllerThread = cT;
         reload_cards();
@@ -109,22 +111,6 @@ public class ClassicGame extends Scene {
         if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         alignTop.setMinWidth(150);
-
-        /*
-        This functionality is currently not implemented
-
-        oneButton.setStyle("-fx-background-color: rgba(0, 0, 0, 0)");
-        oneButton.setGraphic(new ImageView(new Image("/one_button.png", 150, 150, false, false)));
-        oneButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent actionEvent) {
-                 IF NOT YOUR TURN
-                        Check players with 1 card and without "One" flag and give them 2 cards
-                 IF YOUR TURN
-                        Check "One" flag to true
-            }
-        }
-        */
-
         centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
         centerBox.getChildren().addAll(bot_cards[0],centerCenter,bot_cards[2]);
         centerBox.setAlignment(Pos.CENTER);
@@ -184,6 +170,9 @@ public class ClassicGame extends Scene {
                     for(Node c : bot_cards[i].getChildren()) c.setEffect(new DropShadow());
                 }
             }
+        }
+        for(int i=0;i<3;i++) {
+            for (Node c : bot_cards[i].getChildren()) if(eliminationCheck(i)) c.setEffect(colorAdjust);
         }
     }
 
@@ -250,6 +239,11 @@ public class ClassicGame extends Scene {
 
         if(playerId!=0) bot_cards[playerId-1].setSpacing(-130 + min(100,260/max(1,bot_cards[playerId-1].getChildren().size()-1)));
         else player_cards.setSpacing(-130 + min(100,1040/max(1,model.getPlayers().get(0).getHand().size()-1)));
+    }
+
+    //Check if the player has been eliminated, if yes, delete his cards
+    private boolean eliminationCheck(int playerId){
+        return model.getPlayers().get(playerId+1).eliminated;
     }
 
     public void beginUpdate(CountDownLatch latch){
