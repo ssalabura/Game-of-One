@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -17,9 +20,16 @@ import java.util.Properties;
 public class Settings extends Scene {
     public static int difficulty = 0; //0 - easy, 1 - hard
     public static int cards = 7;
+    public static int volume = 100;
 
     private final static StackPane root = new StackPane();
     private final static VBox vb = new VBox(50);
+
+    private final static HBox volumeBox = new HBox(50);
+    private final static Text volumeText = new Text("Music volume:");
+    private final static Button volumeLower = new Button();
+    private final static Text volumeCurrent = new Text();
+    private final static Button volumeHigher = new Button();
 
     private final static HBox difficultyBox = new HBox(50);
     private final static Text difficultyText = new Text("Bot difficulty:");
@@ -40,6 +50,50 @@ public class Settings extends Scene {
 
     private final static Button exit = new Button();
     static void load(){
+        volumeText.setFont(Font.font(View.btnFont,50));
+        volumeText.setStyle("-fx-fill: white;" +
+                "-fx-stroke: black;" +
+                "-fx-stroke-width: 2;");
+
+        volumeLower.setText("▼");
+        volumeLower.setMinSize(50,50);
+        volumeLower.setFont(Font.font(View.btnFont,25));
+        if(volume==0) volumeLower.setDisable(true);
+        volumeLower.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                volume-=10;
+                View.menuPlayer.setVolume((float)volume/100);
+                volumeCurrent.setText(volume+"%");
+                if(volume==0) volumeLower.setDisable(true);
+                volumeHigher.setDisable(false);
+            }
+        });
+
+        volumeCurrent.setText(volume+"%");
+        volumeCurrent.setFont(Font.font(View.btnFont,50));
+        volumeCurrent.setStyle("-fx-fill: white;" +
+                "-fx-stroke: black;" +
+                "-fx-stroke-width: 2;");
+
+        volumeHigher.setText("▲");
+        volumeHigher.setMinSize(50,50);
+        volumeHigher.setFont(Font.font(View.btnFont,25));
+        if(volume==100) volumeHigher.setDisable(true);
+        volumeHigher.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                volume+=10;
+                View.menuPlayer.setVolume((float)volume/100);
+                volumeCurrent.setText(volume+"%");
+                if(volume==100) volumeHigher.setDisable(true);
+                volumeLower.setDisable(false);
+            }
+        });
+
+        volumeBox.getChildren().addAll(volumeText,volumeLower,volumeCurrent,volumeHigher);
+        volumeBox.setAlignment(Pos.CENTER);
+
         difficultyText.setFont(Font.font(View.btnFont,50));
         difficultyText.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
@@ -50,6 +104,7 @@ public class Settings extends Scene {
         if(difficulty==0) difficultyEasy.setStyle("-fx-background-color: #2fe29b");
         difficultyEasy.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 difficulty=0;
                 difficultyEasy.setStyle("-fx-background-color: #2fe29b");
                 difficultyMedium.setStyle("");
@@ -63,6 +118,7 @@ public class Settings extends Scene {
         if(difficulty==1) difficultyMedium.setStyle("-fx-background-color: #2fe29b");
         difficultyMedium.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 difficulty=1;
                 difficultyEasy.setStyle("");
                 difficultyMedium.setStyle("-fx-background-color: #2fe29b");
@@ -76,6 +132,7 @@ public class Settings extends Scene {
         if(difficulty==2) difficultyHard.setStyle("-fx-background-color: #2fe29b");
         difficultyHard.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 difficulty=2;
                 difficultyEasy.setStyle("");
                 difficultyMedium.setStyle("");
@@ -93,8 +150,10 @@ public class Settings extends Scene {
         cardsLess.setText("▼");
         cardsLess.setMinSize(50,50);
         cardsLess.setFont(Font.font(View.btnFont,25));
+        if(cards==1) cardsLess.setDisable(true);
         cardsLess.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 cards--;
                 cardsCount.setText(String.valueOf(cards));
                 if(cards==1) cardsLess.setDisable(true);
@@ -111,8 +170,10 @@ public class Settings extends Scene {
         cardsMore.setText("▲");
         cardsMore.setMinSize(50,50);
         cardsMore.setFont(Font.font(View.btnFont,25));
+        if(cards==15) cardsMore.setDisable(true);
         cardsMore.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 cards++;
                 cardsCount.setText(String.valueOf(cards));
                 if(cards==15) cardsMore.setDisable(true);
@@ -136,10 +197,15 @@ public class Settings extends Scene {
         else texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesClassic.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 View.texture_pack="classic";
                 texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
                 texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
+                View.menuPlayer.stop();
+                View.menuPlayer = new MediaPlayer(new Media(View.class.getResource("/" + View.texture_pack + "/menu.wav").toExternalForm()));
+                View.menuPlayer.setVolume((float)volume/100);
                 View.reloadTextures();
+                View.menuPlayer.play();
             }
         });
 
@@ -151,10 +217,15 @@ public class Settings extends Scene {
         else texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesMinecraft.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 View.texture_pack="minecraft";
                 texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
                 texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
+                View.menuPlayer.stop();
+                View.menuPlayer = new MediaPlayer(new Media(View.class.getResource("/" + View.texture_pack + "/menu.wav").toExternalForm()));
+                View.menuPlayer.setVolume((float)volume/100);
                 View.reloadTextures();
+                View.menuPlayer.play();
             }
         });
 
@@ -163,9 +234,10 @@ public class Settings extends Scene {
 
         exit.setText("Return to Main Menu");
         exit.setOnAction(new EventHandler<ActionEvent>() {
-
             public void handle(ActionEvent event) {
+                new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 Properties p = new Properties();
+                p.setProperty("volume",String.valueOf(volume));
                 p.setProperty("difficulty",String.valueOf(difficulty));
                 p.setProperty("cards",String.valueOf(cards));
                 p.setProperty("texture_pack",View.texture_pack);
@@ -184,7 +256,7 @@ public class Settings extends Scene {
         exit.setFont(Font.font(View.btnFont,20));
         exit.setMaxSize(250,30);
 
-        vb.getChildren().addAll(difficultyBox,cardsBox,texturesBox,exit);
+        vb.getChildren().addAll(volumeBox,difficultyBox,cardsBox,texturesBox,exit);
         vb.setAlignment(Pos.CENTER);
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
@@ -195,6 +267,8 @@ public class Settings extends Scene {
     }
 
     static void reloadTextures() {
+        volumeText.setFont(Font.font(View.btnFont,50));
+        volumeCurrent.setFont(Font.font(View.btnFont,50));
         difficultyText.setFont(Font.font(View.btnFont,50));
         difficultyEasy.setFont(Font.font(View.btnFont,50));
         difficultyMedium.setFont(Font.font(View.btnFont, 50));

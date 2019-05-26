@@ -10,6 +10,7 @@ public abstract class Player {
     LinkedList<Card> hand = new LinkedList<Card>();
     private Card currentCard;
     private boolean active = true;
+    public boolean eliminated = false;
     int cardInd;
     Random r = new Random(System.currentTimeMillis());
 
@@ -57,7 +58,7 @@ public abstract class Player {
     public int getCardInd() {
         return cardInd;
     }
-
+    public void die() {hand.clear();}
     public abstract Card move(Card inputCard);
     public abstract int changeColor(Integer inputColor);
 }
