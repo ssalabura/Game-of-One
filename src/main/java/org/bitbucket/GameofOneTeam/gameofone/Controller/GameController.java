@@ -152,6 +152,28 @@ public class GameController {
                 }
                 sleep(200);
             }
+            if(gameModel instanceof BattleRoyaleModel) {
+                while (gameView.getHandSize(currentPlayer) < gameModel.getPlayers().get(currentPlayer).getHand().size()){
+                    final CountDownLatch latch = new CountDownLatch(1);
+
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            gameView.beginUpdate(latch);
+                            gameView.addCard(currentPlayer ,gameModel.getPlayers().get(currentPlayer).getHand().get(gameView.getHandSize(currentPlayer)));
+                            gameView.endUpdate();
+
+                        }
+                    });
+                    latch.await();
+                    sleep(600);
+                }
+
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        gameView.trackUpdate();
+                    }
+                });
+            }
         }
 
         Platform.runLater(new Runnable() {

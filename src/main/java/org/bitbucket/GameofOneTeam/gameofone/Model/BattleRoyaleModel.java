@@ -50,6 +50,8 @@ public class BattleRoyaleModel implements GameModel{
         else playedCard = players.get(currentPlayer).move(inputCard);
         notifyPlayers(playedCard);
 
+        players.get(currentPlayer).draw(deck.draw());
+
         if(block) block = false;
         else {
             if (playedCard == null) {
@@ -73,7 +75,6 @@ public class BattleRoyaleModel implements GameModel{
                 }
             }
         }
-        players.get(currentPlayer).draw(deck.draw());
         //Eliminate player if he has more than 10 cards
         if (players.get(currentPlayer).getCardNumber() >= 10) {
             if(currentPlayer == 0) {
