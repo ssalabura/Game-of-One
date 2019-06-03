@@ -26,7 +26,7 @@ class MainMenu extends Scene {
     private final static Button battleRoyaleBtn = new Button();
     private final static Button settingsBtn = new Button();
     private final static Button exitgameBtn = new Button();
-    static {
+    public synchronized void load() {
         newgameBtn.setText("Classic Game");
         newgameBtn.setMinSize(100,100);
         newgameBtn.setFont(Font.font(View.btnFont,50));
@@ -123,6 +123,8 @@ class MainMenu extends Scene {
         buttons.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(logo,buttons);
         vb.setAlignment(Pos.CENTER);
+        vb.scaleXProperty().bind(this.widthProperty().divide(1280));
+        vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }

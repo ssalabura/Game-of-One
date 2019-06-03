@@ -118,6 +118,8 @@ public class ClassicGame extends Scene {
         topBox.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
+        vb.scaleXProperty().bind(this.widthProperty().divide(1280));
+        vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.game_background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         choosingColor = false;
@@ -228,10 +230,11 @@ public class ClassicGame extends Scene {
         Node z;
         if(playerId==0) z = player_cards.getChildren().get(ind);
         else z = bot_cards[playerId-1].getChildren().get(ind);
+        z.scaleXProperty().bind(this.widthProperty().divide(1280));
+        z.scaleYProperty().bind(this.heightProperty().divide(720));
         Node zp = z.getParent();
         double x = z.getLayoutX() + zp.getLayoutX() + zp.getParent().getLayoutX();
         double y = z.getLayoutY() + zp.getLayoutY() + zp.getParent().getLayoutY();
-
         root.getChildren().add(z);
         z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2 - 10); // 10 = shadow radius
         z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2 - 10);

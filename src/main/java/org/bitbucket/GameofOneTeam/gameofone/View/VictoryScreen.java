@@ -16,10 +16,10 @@ public class VictoryScreen extends Scene {
     private static Button backToMenuButton = new Button();
     private static Text title = new Text("Game Finished!");
     private static Text winner = new Text();
-    public VictoryScreen(int w, int h) {
+    VictoryScreen(int w, int h) {
         super(root, w, h);
     }
-    public void show(int winnerNum) {
+    void show(int winnerNum) {
         vb  = new VBox(50);
         root.getChildren().clear();
         title.setFont(Font.font(View.btnFont,150));
@@ -48,6 +48,8 @@ public class VictoryScreen extends Scene {
                 "-fx-stroke-width: 2;");
         vb.getChildren().addAll(title,winner,backToMenuButton);
         vb.setAlignment(Pos.CENTER);
+        vb.scaleXProperty().bind(this.widthProperty().divide(1280));
+        vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         View.stage.setScene(this);

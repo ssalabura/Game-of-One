@@ -49,7 +49,7 @@ public class Settings extends Scene {
     private final static Button texturesMinecraft = new Button();
 
     private final static Button exit = new Button();
-    static void load(){
+    void load(){
         volumeText.setFont(Font.font(View.btnFont,50));
         volumeText.setStyle("-fx-fill: white;" +
                 "-fx-stroke: black;" +
@@ -258,6 +258,8 @@ public class Settings extends Scene {
 
         vb.getChildren().addAll(volumeBox,difficultyBox,cardsBox,texturesBox,exit);
         vb.setAlignment(Pos.CENTER);
+        vb.scaleXProperty().bind(this.widthProperty().divide(1280));
+        vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
