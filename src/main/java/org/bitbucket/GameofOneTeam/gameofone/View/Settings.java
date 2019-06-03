@@ -231,7 +231,7 @@ public class Settings extends Scene {
 
         texturesBox.getChildren().addAll(texturesText,texturesClassic,texturesMinecraft);
         texturesBox.setAlignment(Pos.CENTER);
-
+        
         exit.setText("Return to Main Menu");
         exit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {

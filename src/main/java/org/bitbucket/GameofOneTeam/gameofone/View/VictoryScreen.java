@@ -34,7 +34,7 @@ public class VictoryScreen extends Scene {
                     View.menuPlayer.play();
                 }
                 double w = View.stage.getWidth(), h = View.stage.getHeight();
-                View.stage.setScene(View.classicGame);
+                View.stage.setScene(View.mainMenu);
                 View.stage.setWidth(w);
                 View.stage.setHeight(h);
             }
