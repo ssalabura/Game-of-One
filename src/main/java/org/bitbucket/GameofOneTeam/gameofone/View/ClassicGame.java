@@ -101,7 +101,10 @@ public class ClassicGame extends Scene {
                     View.menuPlayer.play();
                 }
                 else try { Thread.sleep(1000); } catch (InterruptedException e) { }
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.mainMenu);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
                 controllerThread.stop();
             }
         });

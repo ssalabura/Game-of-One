@@ -35,7 +35,7 @@ public class View extends Application{
         mainMenu = new MainMenu(1280,720); mainMenu.load();
         classicGame = new ClassicGame(1280,720);
         victoryScreen = new VictoryScreen(1280,720);
-        settings = new Settings(1280,720);
+        settings = new Settings();
 
         Properties p = new Properties();
         File f = new File("save.txt");

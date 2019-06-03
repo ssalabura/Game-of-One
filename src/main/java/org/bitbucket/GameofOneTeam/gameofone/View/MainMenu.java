@@ -58,7 +58,10 @@ class MainMenu extends Scene {
                 });
                 View.classicGame.newGame(model,T);
                 T.start();
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.classicGame);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
 
@@ -93,7 +96,10 @@ class MainMenu extends Scene {
                 });
                 View.classicGame.newGame(model,T);
                 T.start();
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.classicGame);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
         settingsBtn.setText("Settings");
@@ -102,7 +108,10 @@ class MainMenu extends Scene {
         settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.settings);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
 

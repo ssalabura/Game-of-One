@@ -250,7 +250,10 @@ public class Settings extends Scene {
                     e.printStackTrace();
                 }
 
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.mainMenu);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
         exit.setFont(Font.font(View.btnFont,20));
@@ -264,8 +267,8 @@ public class Settings extends Scene {
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
 
-    Settings(int w, int h) {
-        super(root, w, h);
+    Settings() {
+        super(root);
     }
 
     static void reloadTextures() {

@@ -32,9 +32,11 @@ public class VictoryScreen extends Scene {
                 new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
                 if(View.texture_pack.equals("classic")) {
                     View.menuPlayer.play();
-                    View.stage.setScene(View.mainMenu);
                 }
-                View.stage.setScene(View.mainMenu);
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
+                View.stage.setScene(View.classicGame);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
         backToMenuButton.setFont(Font.font(View.btnFont,20));
@@ -52,7 +54,10 @@ public class VictoryScreen extends Scene {
         vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        double w = View.stage.getWidth(), h = View.stage.getHeight();
         View.stage.setScene(this);
+        View.stage.setWidth(w);
+        View.stage.setHeight(h);
         if(View.texture_pack.equals("classic")) View.gamePlayer.stop();
         if(winnerNum==0) new AudioClip(getClass().getResource("/" + View.texture_pack + "/victory.wav").toExternalForm()).play();
         else new AudioClip(getClass().getResource("/" + View.texture_pack + "/defeat.wav").toExternalForm()).play();
