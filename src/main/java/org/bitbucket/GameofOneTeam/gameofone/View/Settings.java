@@ -99,7 +99,7 @@ public class Settings extends Scene {
                 "-fx-stroke: black;" +
                 "-fx-stroke-width: 2;");
         difficultyEasy.setText("Easy");
-        difficultyEasy.setMinSize(100,100);
+        difficultyEasy.setMinSize(200,100);
         difficultyEasy.setFont(Font.font(View.btnFont,50));
         if(difficulty==0) difficultyEasy.setStyle("-fx-background-color: #2fe29b");
         difficultyEasy.setOnAction(new EventHandler<ActionEvent>() {
@@ -113,7 +113,7 @@ public class Settings extends Scene {
         });
 
         difficultyMedium.setText("Medium");
-        difficultyMedium.setMinSize(100,100);
+        difficultyMedium.setMinSize(250,100);
         difficultyMedium.setFont(Font.font(View.btnFont,50));
         if(difficulty==1) difficultyMedium.setStyle("-fx-background-color: #2fe29b");
         difficultyMedium.setOnAction(new EventHandler<ActionEvent>() {
@@ -127,7 +127,7 @@ public class Settings extends Scene {
         });
 
         difficultyHard.setText("Hard");
-        difficultyHard.setMinSize(100,100);
+        difficultyHard.setMinSize(200,100);
         difficultyHard.setFont(Font.font(View.btnFont,50));
         if(difficulty==2) difficultyHard.setStyle("-fx-background-color: #2fe29b");
         difficultyHard.setOnAction(new EventHandler<ActionEvent>() {
@@ -192,7 +192,7 @@ public class Settings extends Scene {
         texturesClassic.setText("Classic");
         texturesClassic.setFont(Font.font("Ubuntu Mono",50));
         texturesClassic.setBackground(new Background(new BackgroundImage(new Image("/classic/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-        texturesClassic.setMinSize(100,100);
+        texturesClassic.setMinSize(300,100);
         if(View.texture_pack.equals("classic")) texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
         else texturesClassic.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesClassic.setOnAction(new EventHandler<ActionEvent>() {
@@ -212,7 +212,7 @@ public class Settings extends Scene {
         texturesMinecraft.setText("Minecraft");
         texturesMinecraft.setFont(Font.font("Minecraft",50));
         texturesMinecraft.setBackground(new Background(new BackgroundImage(new Image("/minecraft/mainmenu.png"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
-        texturesMinecraft.setMinSize(100,100);
+        texturesMinecraft.setMinSize(350,100);
         if(View.texture_pack.equals("minecraft")) texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 10px;");
         else texturesMinecraft.setStyle("-fx-text-fill: white; -fx-border-color: black; -fx-border-width: 5px;");
         texturesMinecraft.setOnAction(new EventHandler<ActionEvent>() {
