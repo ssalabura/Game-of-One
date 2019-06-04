@@ -108,7 +108,7 @@ public class ClassicGame extends Scene {
         exit.setFont(Font.font(View.btnFont,20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
-        if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        if(model.isClockwise()) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         alignTop.setMinWidth(150);
         centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
@@ -138,7 +138,7 @@ public class ClassicGame extends Scene {
     }
 
     public void trackUpdate(){
-        if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        if(model.isClockwise()) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         if(model.getCurrentPlayer()==0) {
             int j = 0;
