@@ -26,7 +26,7 @@ class MainMenu extends Scene {
     private final static Button battleRoyaleBtn = new Button();
     private final static Button settingsBtn = new Button();
     private final static Button exitgameBtn = new Button();
-    static {
+    public synchronized void load() {
         newgameBtn.setText("Classic Game");
         newgameBtn.setMinSize(100,100);
         newgameBtn.setFont(Font.font(View.btnFont,50));
@@ -58,7 +58,10 @@ class MainMenu extends Scene {
                 });
                 View.classicGame.newGame(model,T);
                 T.start();
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.classicGame);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
 
@@ -93,7 +96,10 @@ class MainMenu extends Scene {
                 });
                 View.classicGame.newGame(model,T);
                 T.start();
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.classicGame);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
         settingsBtn.setText("Settings");
@@ -102,7 +108,10 @@ class MainMenu extends Scene {
         settingsBtn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent actionEvent) {
                 new AudioClip(getClass().getResource("/" + View.texture_pack + "/click.wav").toExternalForm()).play();
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.settings);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
             }
         });
 
@@ -123,6 +132,8 @@ class MainMenu extends Scene {
         buttons.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(logo,buttons);
         vb.setAlignment(Pos.CENTER);
+        vb.scaleXProperty().bind(this.widthProperty().divide(1280));
+        vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
