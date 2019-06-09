@@ -6,16 +6,16 @@ ich są opisane poniżej.
 
 1.1. CLASSIC GAME
 Włącza klasyczną grę w UNO. Patrząc od góry, po lewej stronie znajduję się znacznik, mówiący w którą stronę idzie 
-kolejka. Po jego prawej znajdują się karty jednage z graczy SI. Niżej, w centralnej części ekranu, leżą już zagrane
+kolejka. Po jego prawej znajdują się karty jednego z graczy SI. Niżej, w centralnej części ekranu, leżą już zagrane
 karty, z ostatnio zagraną kartą na wierzchu. Po jej prawej i lewej znajdują się karty kolejnych dwóch graczy SI.
 Niżej są karty gracza. Jeśli jest tura gracza, to możliwe do zagrania karty są podświetlone. Pod nimi znajduję się
 przycisk wyjścia z gry.
 
 Zasady "Classic Game" są następujące:
-- Celem gry jest pozbycie się wszystkich kart zanim zrobią to inni gracze
+- Celem gry jest pozbycie się wszystkich kart zanim zrobią to inni gracze.
 - W swojej turze należy zagrać jedną z możliwych do zagrania kart. Na daną kartę można położyć kartę tego samego typu
   lub tego samego koloru.
-- Istnieją kart specjalne, których działanie jest następujące: BLOCK - następny gracz traci turę, REVERSE - zmienia
+- Istnieją karty specjalne, których działanie jest następujące: BLOCK - następny gracz traci turę, REVERSE - zmienia
   się kolejność tur na przeciwną, +2(+4) - następny gracz musi zagrać kartę +2(+4), albo dobrać odpowiednią ilość kart 
   (+4 dodatkowo pozwala graczowi wybrać kolor, który będzie obowiązywał), COLOR CHANGE - pozwala graczowi wybrać kolor, 
   który będzie obowiązywał.
