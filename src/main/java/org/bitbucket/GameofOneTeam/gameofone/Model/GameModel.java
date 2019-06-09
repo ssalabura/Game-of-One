@@ -10,7 +10,7 @@ public interface GameModel {
     void playNextTurn(Card inputCard, Integer color);
     Integer getWinner();  // null if game has not ended
     boolean getBlock();
-    boolean clockwise = true;
+    boolean isClockwise();
     Card getPlayedCard();
     Card deckTop();
 }

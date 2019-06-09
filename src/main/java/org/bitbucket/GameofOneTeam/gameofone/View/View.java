@@ -32,10 +32,10 @@ public class View extends Application{
         Font.loadFont(getClass().getResource("/minecraft/MinecraftFont.ttf").toExternalForm(),10);
 
         stage = primaryStage;
-        mainMenu = new MainMenu(1280,720);
+        mainMenu = new MainMenu(1280,720); mainMenu.load();
         classicGame = new ClassicGame(1280,720);
         victoryScreen = new VictoryScreen(1280,720);
-        settings = new Settings(1280,720);
+        settings = new Settings();
 
         Properties p = new Properties();
         File f = new File("save.txt");
@@ -47,10 +47,9 @@ public class View extends Application{
             try { Settings.cards=Integer.valueOf(p.getProperty("cards")); } catch(Exception e) { Settings.cards=7; }
             try { texture_pack=p.getProperty("texture_pack"); } catch(Exception e) { texture_pack="classic"; }
         } catch (Exception e) { }
-        Settings.load();
+        settings.load();
         reloadTextures();
 
-        primaryStage.setResizable(false);
         primaryStage.setTitle("Game of One");
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {

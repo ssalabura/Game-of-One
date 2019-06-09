@@ -79,9 +79,10 @@ public class ClassicGameModel implements GameModel {
     }
 
     public LinkedList<Player> getPlayers() { return players; }
-    public Integer getCurrentPlayer(){ return currentPlayer; }
-    public Integer getWinner(){ return winner; }
-    public boolean getBlock(){ return block;}
+    public Integer getCurrentPlayer() { return currentPlayer; }
+    public Integer getWinner() { return winner; }
+    public boolean getBlock() { return block; }
+    public boolean isClockwise() { return clockwise; }
     public Card getPlayedCard() { return playedCard; }
     public Card deckTop() { return deck.top(); }
 }

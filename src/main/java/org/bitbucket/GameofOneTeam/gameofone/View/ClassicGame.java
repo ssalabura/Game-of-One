@@ -3,6 +3,7 @@ package org.bitbucket.GameofOneTeam.gameofone.View;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -101,14 +102,17 @@ public class ClassicGame extends Scene {
                     View.menuPlayer.play();
                 }
                 else try { Thread.sleep(1000); } catch (InterruptedException e) { }
+                double w = View.stage.getWidth(), h = View.stage.getHeight();
                 View.stage.setScene(View.mainMenu);
+                View.stage.setWidth(w);
+                View.stage.setHeight(h);
                 controllerThread.stop();
             }
         });
         exit.setFont(Font.font(View.btnFont,20));
         exit.setMaxSize(250,30);
         player_cards.setAlignment(Pos.CENTER);
-        if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        if(model.isClockwise()) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         alignTop.setMinWidth(150);
         centerCenter.getChildren().add(new ImageView(model.deckTop().getImage()));
@@ -118,6 +122,8 @@ public class ClassicGame extends Scene {
         topBox.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(topBox,centerBox,player_cards,exit);
         vb.setAlignment(Pos.CENTER);
+        vb.scaleXProperty().bind(this.widthProperty().divide(1280));
+        vb.scaleYProperty().bind(this.heightProperty().divide(720));
         root.getChildren().add(vb);
         root.setBackground(new Background(new BackgroundImage(View.game_background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         choosingColor = false;
@@ -138,7 +144,7 @@ public class ClassicGame extends Scene {
     }
 
     public void trackUpdate(){
-        if(model.clockwise) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
+        if(model.isClockwise()) order.setImage(new Image("/clockwise.png", 150, 150, false, false));
         else order.setImage(new Image("/counter_clockwise.png", 150, 150, false, false));
         if(model.getCurrentPlayer()==0) {
             int j = 0;
@@ -212,8 +218,8 @@ public class ClassicGame extends Scene {
         TranslateTransition tt = new TranslateTransition();
         tt.setNode(z);
         tt.setDuration(Duration.millis(500));
-        tt.setToX(centerCenter.getLayoutX() - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2 - ((DropShadow)z.getEffect()).getRadius());
-        tt.setToY(centerBox.getLayoutY() - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2 - ((DropShadow)z.getEffect()).getRadius());
+        tt.setToX(0);
+        tt.setToY(-39 * z.getScaleY());
         tt.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 updateDeckTop();
@@ -228,13 +234,13 @@ public class ClassicGame extends Scene {
         Node z;
         if(playerId==0) z = player_cards.getChildren().get(ind);
         else z = bot_cards[playerId-1].getChildren().get(ind);
-        Node zp = z.getParent();
-        double x = z.getLayoutX() + zp.getLayoutX() + zp.getParent().getLayoutX();
-        double y = z.getLayoutY() + zp.getLayoutY() + zp.getParent().getLayoutY();
-
+        z.scaleXProperty().bind(this.widthProperty().divide(1280));
+        z.scaleYProperty().bind(this.heightProperty().divide(720));
+        Bounds x = z.localToScene(z.getBoundsInLocal());
+        Bounds y = centerCenter.localToScene(centerCenter.getBoundsInLocal());
         root.getChildren().add(z);
-        z.setTranslateX(x - root.getWidth()/2 + z.getBoundsInLocal().getWidth()/2 - 10); // 10 = shadow radius
-        z.setTranslateY(y - root.getHeight()/2 + z.getBoundsInLocal().getHeight()/2 - 10);
+        z.setTranslateX((x.getMinX() + x.getMaxX() - y.getMinX() - y.getMaxX())/2);
+        z.setTranslateY((x.getMinY() + x.getMaxY() - y.getMinY() - y.getMaxY())/2 - 39 * z.getScaleY());
         animate(z);
 
         if(playerId!=0) bot_cards[playerId-1].setSpacing(-130 + min(100,260/max(1,bot_cards[playerId-1].getChildren().size()-1)));
